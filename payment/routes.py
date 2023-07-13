@@ -1,9 +1,9 @@
 from flask_jwt_extended import jwt_required
 from flask_smorest import Blueprint, abort
 from flask.views import MethodView
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
-from psycopg2.errors import OperationalError
-
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError, NoResultFound
+from psycopg2 import OperationalError
+from sqlalchemy.exc import OperationalError as SQLAlchemyOperationalError
 
 from schema import WalletSchema, TransactionSchema, FundTransactionSchema
 from models import Transactions, Wallet, FundTransaction
@@ -39,11 +39,21 @@ class CreateWallet(MethodView):
 
         except OperationalError:
             db.session.rollback()
-            abort(503, message="service unavailable")
+            abort(503, message="Service unavailable")
+        
+        except SQLAlchemyOperationalError:
+            db.session.rollback()
+            abort(503, message="Service unavailable")
 
         except SQLAlchemyError as err:
             db.session.rollback()
-            abort(500, message=str(err))
+            print(str(err))
+            abort(500, message="Something went wrong")
+        
+        except Exception as err:
+            db.session.rollback()
+            print(str(err))
+            abort(500, message="Something went wrong")
 
         return wallet
 
@@ -59,8 +69,22 @@ class FetchWallet(MethodView):
         try:
             wallet = Wallet.query.get_or_404(wallet_id)
 
+        except NoResultFound:
+            abort(404, message="wallet not found")
+
         except OperationalError:
             abort(503, "service unavailable")
+
+        except SQLAlchemyOperationalError:
+            abort(503, "service unavailable")
+
+        except SQLAlchemyError as err:
+            print(str(err))
+            abort(500, message="Something went wrong")
+
+        except Exception as err:
+            print(str(err))
+            abort(500, message="Something went wrong")
 
         return wallet
 
@@ -152,10 +176,20 @@ class CreateTransaction(MethodView):
 
         except OperationalError:
             db.session.rollback()
-            abort(403, message="service unavailable")
+            abort(503, message="service unavailable")
+        
+        except SQLAlchemyOperationalError:
+            db.session.rollback()
+            abort(503, message="service unavailable")
+
+        except SQLAlchemyError as err:
+            db.session.rollback()
+            print(str(err))
+            abort(500, message="service unavailable")
 
         except Exception as err:
             db.session.rollback()
+            print(str(err))
             abort(500, message="unknown error occured")
 
         return sender_transaction
@@ -198,9 +232,19 @@ class FundWallet(MethodView):
             db.session.rollback()
             abort(503, message="Service unavailable.")
 
+        except SQLAlchemyOperationalError as err:
+            db.session.rollback()
+            abort(503, message="service unavailable")
+
+        except SQLAlchemyError as err:
+            db.session.rollback()
+            print(str(err))
+            abort(500, message="Something went wrong")
+
         except Exception as err:
             db.session.rollback()
-            abort(500, message=f"Internal Server Error: {str(err)}")
+            print(str(err))
+            abort(500, message="Something went wrong")
 
         fund_wallet = FundTransaction(amount=amount, wallet_id=wallet_id)
         try:
@@ -211,8 +255,18 @@ class FundWallet(MethodView):
             db.session.rollback()
             abort(503, message="service unavailable")
 
+        except SQLAlchemyOperationalError as err:
+            db.session.rollback()
+            abort(503, message="service unavailable")
+
+        except SQLAlchemyError as err:
+            db.session.rollback()
+            print(str(err))
+            abort(500, message="Something went wrong")
+
         except Exception as err:
             db.session.rollback()
-            abort(500, message=f"Internal Server Error: {str(err)}")
+            print(str(err))
+            abort(500, message="Something went wrong")
 
         return fund_wallet

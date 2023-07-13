@@ -6,7 +6,8 @@ from sqlalchemy.exc import (
     SQLAlchemyError,
     NoResultFound,
 )
-from psycopg2.errors import OperationalError
+from psycopg2 import OperationalError
+from sqlalchemy.exc import OperationalError as SQLAlchemyOperationalError
 
 from schema import ReportSchema, ProfileSchema
 from utils.risk_assessment import risk_assessment, generate_report_summary
@@ -40,9 +41,17 @@ class BorrowerProfile(MethodView):
 
         except OperationalError:
             abort(503, message="Service unavailable")
+        
+        except SQLAlchemyOperationalError:
+            abort(503, message="Service unavailable")
 
         except SQLAlchemyError as err:
-            abort(500, message=str(err))
+            print(str(err))
+            abort(500, message="Something went wrong")
+        
+        except Exception as err:
+            print(str(err))
+            abort(500, message="Something went wrong")
 
     @blp.arguments(ProfileSchema, location='form')
     @blp.response(201, ProfileSchema)
@@ -63,8 +72,22 @@ class BorrowerProfile(MethodView):
 
         except IntegrityError:
             abort(400, message="profile exists for user")
+        
+        except OperationalError:
+            db.session.rollback()
+            abort(503, message="Service unavailable")
+
+        except SQLAlchemyOperationalError:
+            abort(503, message="Service unavailable")
+
         except SQLAlchemyError as err:
-            abort(500, message=f"{err}")
+            db.session.rollback()
+            print(str(err))
+            abort(500, message="Something went wrong")
+        
+        except Exception as err:
+            db.session.rollback()
+            abort(500, message="Something went wrong")
 
         return profile
 
@@ -78,13 +101,26 @@ class BorrowerProfile(MethodView):
                 db.session.commit()
             else:
                 abort(404)
+        
+        except OperationalError:
+            db.session.rollback()
+            abort(503, message="Service unavailable")
+
+        except SQLAlchemyOperationalError:
+            db.session.rollback()
+            abort(503, message="Service unavailable")
+
         except SQLAlchemyError as err:
-            abort(500, message=f"{err}")
+            db.session.rollback()
+            print(str(err))
+            abort(500, message="something went wrong")
+        
 
         except Exception as err:
-            abort(500, message=f"{err}")
+            print(str(err))
+            abort(500, message="Something went wrong")
 
-        return {"message": "profile deleted"}, 200
+        return {"message": "profile deleted"}, 202
 
 
 @blp.route("/<uuid:borrower_id>/report")
@@ -100,6 +136,21 @@ class AssessmentReport(MethodView):
 
         except NoResultFound:
             abort(404, message="Report not found.")
+
+        except OperationalError:
+            abort(503, message="Service unavailable")
+
+        except SQLAlchemyOperationalError:
+            abort(503, message="Service unavailable")
+
+        except SQLAlchemyError as err:
+            print(str(err))
+            abort(500, message="something went wrong")
+        
+
+        except Exception as err:
+            print(str(err))
+            abort(500, message="Something went wrong")
 
         return report
 
@@ -138,10 +189,20 @@ class AssessmentReport(MethodView):
 
         except OperationalError:
             db.session.rollback()
-            abort(503, message="service unavailable")
+            abort(503, message="Service unavailable")
+
+        except SQLAlchemyOperationalError:
+            db.session.rollback()
+            abort(503, message="Service unavailable")
 
         except SQLAlchemyError as err:
             db.session.rollback()
-            abort(500, message=f"{err}")
+            print(str(err))
+            abort(500, message="something went wrong")
+        
+
+        except Exception as err:
+            print(str(err))
+            abort(500, message="Something went wrong")
 
         return report

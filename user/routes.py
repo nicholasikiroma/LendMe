@@ -5,7 +5,8 @@ import requests
 from flask_smorest import Blueprint, abort
 from flask.views import MethodView
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError, NoResultFound
-from psycopg2.errors import OperationalError
+from sqlalchemy.exc import OperationalError as SQLAlchemyOperationalError
+from psycopg2 import OperationalError
 
 from schema import LoginSchema, UserSchema
 from models import User, db
@@ -70,6 +71,10 @@ class CreateUser(MethodView):
         except OperationalError as err:
             db.session.rollback()
             abort(503, message="Service unavailable")
+        
+        except SQLAlchemyOperationalError:
+            db.session.rollback()
+            abort(503, message="Service unavailable")
 
         except SQLAlchemyError as err:
             db.session.rollback()
@@ -89,11 +94,21 @@ class CreateUser(MethodView):
 
         except OperationalError as err:
             db.session.rollback()
-            abort(503, message=str(err))
-        
+            abort(503, message="Service unavailable")
+
+        except SQLAlchemyOperationalError:
+            db.session.rollback()
+            abort(503, message="Service unavailable")
+  
         except SQLAlchemyError as err:
             db.session.rollback()
-            abort(500, message=str(err))
+            print(str(err))
+            abort(500, message="Oops...something went wrong")
+    
+        except Exception as err:
+            db.session.rollback()
+            print(str(err))
+            abort(500, message="Error creating wallet")
 
         return user
 
@@ -119,6 +134,11 @@ class LoginUser(MethodView):
                 db.session.commit()
             
             except OperationalError:
+                abort(503, message="Service unavailable")
+            
+
+            except SQLAlchemyOperationalError:
+                db.session.rollback()
                 abort(503, message="Service unavailable")
 
             except SQLAlchemyError as err:
@@ -148,15 +168,20 @@ class GetUser(MethodView):
             abort(404, message="User not found")
 
         except OperationalError as err:
-            abort(503, message=f"Failed to fetch user: {str(err)}")
+            abort(503, message="Service unavailable")
 
+        except SQLAlchemyOperationalError as err:
+            abort(503, message="Service unavailable")
+        
         except SQLAlchemyError as err:
             db.session.rollback()
-            abort(500, message=str(err))
+            print(str(err))
+            abort(500, message="Something went wrong")
         
         except Exception as err:
             db.session.rollback()
-            abort(500, message=str(err))
+            print(str(err))
+            abort(500, message="Something went wrong")
 
         return user
 

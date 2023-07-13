@@ -63,9 +63,19 @@ class Loans(MethodView):
             db.session.rollback()
             abort(503, message="Service unavailable")
 
+        except SQLAlchemyOperationalError as err:
+            db.session.rollback()
+            abort(503, message="service unavailable")
+
         except SQLAlchemyError as err:
             db.session.rollback()
-            abort(500, message=str(err))
+            print(str(err))
+            abort(500, message="Something went wrong")
+
+        except Exception as err:
+            db.session.rollback()
+            print(str(err))
+            abort(500, message="Something went wrong")
 
         return loan
 
@@ -83,10 +93,19 @@ class LoanOperations(MethodView):
             db.session.rollback()
             abort(503, message="Service unavailable")
 
+        except SQLAlchemyOperationalError as err:
+            db.session.rollback()
+            abort(503, message="service unavailable")
+
         except SQLAlchemyError as err:
             db.session.rollback()
             print(str(err))
-            abort(500, message="Service unavailable")
+            abort(500, message="Something went wrong")
+
+        except Exception as err:
+            db.session.rollback()
+            print(str(err))
+            abort(500, message="Something went wrong")
 
         return loan
 
@@ -104,9 +123,19 @@ class LoanOperations(MethodView):
             db.session.rollback()
             abort(503, message="service unavailable")
 
+        except SQLAlchemyOperationalError as err:
+            db.session.rollback()
+            abort(503, message="service unavailable")
+
         except SQLAlchemyError as err:
             db.session.rollback()
-            abort(500, message=str(err))
+            print(str(err))
+            abort(500, message="Something went wrong")
+
+        except Exception as err:
+            db.session.rollback()
+            print(str(err))
+            abort(500, message="Something went wrong")
 
         return {"message": "loan deleted"}
 
@@ -161,13 +190,24 @@ class LoanApplications(MethodView):
         try:
             db.session.add(application)
             db.session.commit()
-
-        except SQLAlchemyError as err:
-            abort(500, message=str(err))
         
         except OperationalError:
             db.session.rollback()
             abort(503, message="service unavailable")
+        
+        except SQLAlchemyOperationalError as err:
+            db.session.rollback()
+            abort(503, message="service unavailable")
+
+        except SQLAlchemyError as err:
+            db.session.rollback()
+            print(str(err))
+            abort(500, message="Something went wrong")
+
+        except Exception as err:
+            db.session.rollback()
+            print(str(err))
+            abort(500, message="Something went wrong")
 
         loan = Loan.query.get_or_404(loan_id)
         loan.status = "CLOSED"
@@ -181,8 +221,19 @@ class LoanApplications(MethodView):
             db.session.rollback()
             abort(503, message="service unavailable")
 
+        except SQLAlchemyOperationalError as err:
+            db.session.rollback()
+            abort(503, message="service unavailable")
+
         except SQLAlchemyError as err:
-            abort(500, message=(err))
+            db.session.rollback()
+            print(str(err))
+            abort(500, message="Something went wrong")
+
+        except Exception as err:
+            db.session.rollback()
+            print(str(err))
+            abort(500, message="Something went wrong")
 
         return {"message": "successful"}
 
@@ -204,11 +255,19 @@ class StartDate(MethodView):
             db.session.rollback()
             abort(503, message="service unavailable")
 
+        except SQLAlchemyOperationalError as err:
+            db.session.rollback()
+            abort(503, message="service unavailable")
+
         except SQLAlchemyError as err:
-            abort(500, message=str(err))
+            db.session.rollback()
+            print(str(err))
+            abort(500, message="Something went wrong")
 
         except Exception as err:
-            abort(500, message=str(err))
+            db.session.rollback()
+            print(str(err))
+            abort(500, message="Something went wrong")
 
         return loan
 
@@ -230,11 +289,19 @@ class EndDate(MethodView):
             db.session.rollback()
             abort(503, message="service unavailable")
 
+        except SQLAlchemyOperationalError as err:
+            db.session.rollback()
+            abort(503, message="service unavailable")
+
         except SQLAlchemyError as err:
-            abort(500, message=str(err))
+            db.session.rollback()
+            print(str(err))
+            abort(500, message="Something went wrong")
 
         except Exception as err:
-            abort(500, message=str(err))
+            db.session.rollback()
+            print(str(err))
+            abort(500, message="Something went wrong")
 
         return loan
 
@@ -278,9 +345,19 @@ class Apply(MethodView):
                 db.session.rollback()
                 abort(503, message="Service unavailable. Try again later.")
 
+            except SQLAlchemyOperationalError as err:
+                db.session.rollback()
+                abort(503, message="service unavailable")
+
             except SQLAlchemyError as err:
                 db.session.rollback()
-                abort(500, message=str(err))
+                print(str(err))
+                abort(500, message="Something went wrong")
+
+            except Exception as err:
+                db.session.rollback()
+                print(str(err))
+                abort(500, message="Something went wrong")
 
         return {"message": "Application successful!"}
 
@@ -305,6 +382,20 @@ class UserApplications(MethodView):
         except OperationalError:
             abort(503, message="Service temporarily unavailable")
 
+        except SQLAlchemyOperationalError as err:
+            db.session.rollback()
+            abort(503, message="service unavailable")
+
+        except SQLAlchemyError as err:
+            db.session.rollback()
+            print(str(err))
+            abort(500, message="Something went wrong")
+
+        except Exception as err:
+            db.session.rollback()
+            print(str(err))
+            abort(500, message="Something went wrong")
+
         return loans
 
 
@@ -323,7 +414,18 @@ class UserLoans(MethodView):
         except OperationalError:
             abort(503, message="Service temporarily unavailable")
         
-        except Exception:
-            abort(500, message="Unknown error occured")
+        except SQLAlchemyOperationalError as err:
+            db.session.rollback()
+            abort(503, message="service unavailable")
+
+        except SQLAlchemyError as err:
+            db.session.rollback()
+            print(str(err))
+            abort(500, message="Something went wrong")
+
+        except Exception as err:
+            db.session.rollback()
+            print(str(err))
+            abort(500, message="Something went wrong")
 
         return loans
