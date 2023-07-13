@@ -1,5 +1,7 @@
 """Base Application for Frontend service"""
 import os
+from datetime import datetime
+
 from flask import Flask, send_from_directory
 from dotenv import load_dotenv
 
@@ -14,6 +16,12 @@ def create_app():
 
     # base configurations for flask app 
     app.config["SECRET_KEY"] = os.getenv('SECRET_KEY')
+
+    @app.template_filter('datetimeformat')
+    def datetimeformat(value, format='%B %d, %Y, %H:%M'):
+        if isinstance(value, datetime):
+            return value.strftime(format)
+        return value
     
     app.register_blueprint(index_blueprint)
     app.register_blueprint(dashboard_blueprint)

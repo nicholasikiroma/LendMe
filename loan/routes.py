@@ -27,7 +27,7 @@ class Loans(MethodView):
     def get(self):
         """Fetch all loans"""
         try:
-            return Loan.query.all()
+            return Loan.query.order_by(Loan.created_at.desc()).all()
         
         except OperationalError:
             abort(503, message="service unavailable")

@@ -1,15 +1,19 @@
 """Module contains logic for risk assessment"""
-
 def generate_report_summary(result):
     is_eligible = result["is_eligible"]
     risk_score = result["risk_score"]
     debt_to_income_ratio = result["debt_to_income_ratio"]
 
-    # Generate a summary based on the assessment result
+    # Generate a sentence-like summary based on the assessment result
     summary = "Loan Assessment Report:\n\n"
-    summary += "Eligibility: {}\n".format("Yes" if is_eligible else "No")
-    summary += "Risk Score: {}\n".format(risk_score)
-    summary += "Debt-to-Income Ratio: {:.2f}\n".format(debt_to_income_ratio)
+    
+    if is_eligible:
+        summary += "The user is eligible for this loan. "
+    else:
+        summary += "The user is not eligible for this loan. "
+    
+    summary += "They have a risk score of {} which shows their capacity to repay the loan, ".format(risk_score)
+    summary += "and a DTI ratio of {}.".format(debt_to_income_ratio)
 
     return summary
 

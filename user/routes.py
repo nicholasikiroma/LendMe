@@ -122,7 +122,15 @@ class LoginUser(MethodView):
         email = user_data["email"]
         password = user_data["password"]
 
-        user = User.query.filter(User.email == email).first()
+        try:
+            user = User.query.filter(User.email == email).first()
+        
+        except OperationalError:
+            abort(503, message="Service unavailable")
+
+        except SQLAlchemyOperationalError:
+            abort(503, message="Service unavailable")
+
         if not user:
             abort(404, message="User not found.")
 
