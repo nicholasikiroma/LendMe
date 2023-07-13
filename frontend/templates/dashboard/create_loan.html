@@ -1,0 +1,137 @@
+{% extends 'base.html' %} {% block content %}
+    <!-- Card Section -->
+    <div class="max-w-2xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+        {% for message in get_flashed_messages() %}
+        <div
+          id="dismiss-alert"
+          class="hs-removing:translate-x-5 hs-removing:opacity-0 transition duration-300 bg-teal-50 border border-teal-200 rounded-md p-4"
+          role="alert"
+        >
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <svg
+                class="h-4 w-4 text-blue-500 mt-0.5"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"
+                />
+              </svg>
+            </div>
+            <div class="ml-3">
+              <div class="text-sm text-teal-800 font-medium">{{ message }}</div>
+            </div>
+            <div class="pl-3 ml-auto">
+              <div class="-mx-1.5 -my-1.5">
+                <button
+                  type="button"
+                  class="inline-flex bg-teal-50 rounded-md p-1.5 text-teal-500 hover:bg-teal-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-teal-50 focus:ring-teal-600"
+                  data-hs-remove-element="#dismiss-alert"
+                >
+                  <span class="sr-only">Dismiss</span>
+                  <svg
+                    class="h-3 w-3"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M0.92524 0.687069C1.126 0.486219 1.39823 0.373377 1.68209 0.373377C1.96597 0.373377 2.2382 0.486219 2.43894 0.687069L8.10514 6.35813L13.7714 0.687069C13.8701 0.584748 13.9882 0.503105 14.1188 0.446962C14.2494 0.39082 14.3899 0.361248 14.5321 0.360026C14.6742 0.358783 14.8151 0.38589 14.9468 0.439762C15.0782 0.493633 15.1977 0.573197 15.2983 0.673783C15.3987 0.774389 15.4784 0.894026 15.5321 1.02568C15.5859 1.15736 15.6131 1.29845 15.6118 1.44071C15.6105 1.58297 15.5809 1.72357 15.5248 1.85428C15.4688 1.98499 15.3872 2.10324 15.2851 2.20206L9.61883 7.87312L15.2851 13.5441C15.4801 13.7462 15.588 14.0168 15.5854 14.2977C15.5831 14.5787 15.4705 14.8474 15.272 15.046C15.0735 15.2449 14.805 15.3574 14.5244 15.3599C14.2437 15.3623 13.9733 15.2543 13.7714 15.0591L8.10514 9.38812L2.43894 15.0591C2.23704 15.2543 1.96663 15.3623 1.68594 15.3599C1.40526 15.3574 1.13677 15.2449 0.938279 15.046C0.739807 14.8474 0.627232 14.5787 0.624791 14.2977C0.62235 14.0168 0.730236 13.7462 0.92524 13.5441L6.59144 7.87312L0.92524 2.20206C0.724562 2.00115 0.611816 1.72867 0.611816 1.44457C0.611816 1.16047 0.724562 0.887983 0.92524 0.687069Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      
+        <!-- Card -->
+        <div class="bg-white rounded-xl shadow p-4 sm:p-7 dark:bg-slate-900">
+          <div class="text-center mb-8">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-200">
+              Create Loan
+            </h2>
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+              Create new loan opportunities and earn a profit
+            </p>
+          </div>
+  
+          <form action="{{ url_for('dashboard.create_loan') }}" method="POST">
+            {{ form.hidden_tag() }}
+            <!-- Section -->
+            <div class="py-6 first:pt-0 last:pb-0 border-t first:border-transparent border-gray-200 dark:border-gray-700">
+                {{ form.amount.label(class_="inline-block text-sm font-semibold dark:text-white")}} (&#8358;)
+  
+              <div class="mt-2 space-y-3">
+                {{ form.amount(class="py-2 px-3 pr-11 block w-full border-gray-200 shadow-sm text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400", placeholder="5000") }}
+              </div>
+              {% if form.amount.errors %}
+              <ul class="text-xs text-red-600 mt-2" id="email-error">
+                {% for error in form.amount.errors %}
+                <li><small class="text-red-500">{{ error }}</small></li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+            </div>
+            <!-- End Section -->
+  
+            <!-- Section -->
+            <div class="py-6 first:pt-0 last:pb-0 border-t first:border-transparent border-gray-200 dark:border-gray-700">
+                {{ form.interest.label(class="inline-block text-sm font-semibold dark:text-white")}}
+
+  
+              <div class="mt-2 space-y-3">
+                {{ form.interest(class="py-2 px-3 pr-11 block w-full border-gray-200 shadow-sm text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400", placeholder="Ex. 3") }}
+              </div>
+              {% if form.interest.errors %}
+              <ul class="text-xs text-red-600 mt-2" id="email-error">
+                {% for error in form.interest.errors %}
+                <li><small class="text-red-500">{{ error }}</small></li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+            </div>
+            <!-- End Section -->
+  
+            <!-- Section -->
+            <div class="py-6 first:pt-0 last:pb-0 border-t first:border-transparent border-gray-200 dark:border-gray-700">
+                {{ form.duration.label(class="inline-block text-sm font-semibold dark:text-white") }}
+  
+              <div class="mt-2 space-y-3">
+                {{ form.duration(class="py-2 px-3 pr-11 block w-full border-gray-200 shadow-sm text-sm rounded-lg focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400", placeholder="Ex. 30") }}
+              </div>
+            </div>
+            <!-- End Section -->
+            {{ form.lender_id() }}
+
+            {% if form.lender_id.errors %}
+            <ul class="text-xs text-red-600 mt-2" id="email-error">
+              {% for error in form.lender_id.errors %}
+              <li><small class="text-red-500">{{ error }}</small></li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+
+            <div class="mt-5 flex justify-center gap-x-2">
+                <button type="submit" class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">
+                  Create loan
+                </button>
+            </div>
+    
+          </form>
+  
+
+        </div>
+        <!-- End Card -->
+      </div>
+      <!-- End Card Section -->
+{% endblock content %}

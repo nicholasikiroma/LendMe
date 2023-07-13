@@ -1,0 +1,266 @@
+{% extends 'base.html' %} {% block content %}
+<!-- Content -->
+<div class="w-full pt-10 px-4 sm:px-6 md:px-8 lg:pl-72">
+  <!-- Page Heading -->
+  {% for message in get_flashed_messages() %}
+  <div
+    id="dismiss-alert"
+    class="hs-removing:translate-x-5 hs-removing:opacity-0 transition duration-300 bg-teal-50 border border-teal-200 rounded-md p-4"
+    role="alert"
+  >
+    <div class="flex">
+      <div class="flex-shrink-0">
+        <svg
+          class="h-4 w-4 text-blue-500 mt-0.5"
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          viewBox="0 0 16 16"
+        >
+          <path
+            d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"
+          />
+        </svg>
+      </div>
+      <div class="ml-3">
+        <div class="text-sm text-teal-800 font-medium">{{ message }}</div>
+      </div>
+      <div class="pl-3 ml-auto">
+        <div class="-mx-1.5 -my-1.5">
+          <button
+            type="button"
+            class="inline-flex bg-teal-50 rounded-md p-1.5 text-teal-500 hover:bg-teal-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-teal-50 focus:ring-teal-600"
+            data-hs-remove-element="#dismiss-alert"
+          >
+            <span class="sr-only">Dismiss</span>
+            <svg
+              class="h-3 w-3"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path
+                d="M0.92524 0.687069C1.126 0.486219 1.39823 0.373377 1.68209 0.373377C1.96597 0.373377 2.2382 0.486219 2.43894 0.687069L8.10514 6.35813L13.7714 0.687069C13.8701 0.584748 13.9882 0.503105 14.1188 0.446962C14.2494 0.39082 14.3899 0.361248 14.5321 0.360026C14.6742 0.358783 14.8151 0.38589 14.9468 0.439762C15.0782 0.493633 15.1977 0.573197 15.2983 0.673783C15.3987 0.774389 15.4784 0.894026 15.5321 1.02568C15.5859 1.15736 15.6131 1.29845 15.6118 1.44071C15.6105 1.58297 15.5809 1.72357 15.5248 1.85428C15.4688 1.98499 15.3872 2.10324 15.2851 2.20206L9.61883 7.87312L15.2851 13.5441C15.4801 13.7462 15.588 14.0168 15.5854 14.2977C15.5831 14.5787 15.4705 14.8474 15.272 15.046C15.0735 15.2449 14.805 15.3574 14.5244 15.3599C14.2437 15.3623 13.9733 15.2543 13.7714 15.0591L8.10514 9.38812L2.43894 15.0591C2.23704 15.2543 1.96663 15.3623 1.68594 15.3599C1.40526 15.3574 1.13677 15.2449 0.938279 15.046C0.739807 14.8474 0.627232 14.5787 0.624791 14.2977C0.62235 14.0168 0.730236 13.7462 0.92524 13.5441L6.59144 7.87312L0.92524 2.20206C0.724562 2.00115 0.611816 1.72867 0.611816 1.44457C0.611816 1.16047 0.724562 0.887983 0.92524 0.687069Z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  <header>
+    <h1
+      class="block text-2xl font-bold text-gray-800 sm:text-3xl dark:text-white"
+    >
+      Transaction History
+    </h1>
+    <p class="mt-2 text-lg text-gray-800 dark:text-gray-400">
+      All transactions associated with your wallet.
+    </p>
+  </header>
+  <div class="flex flex-col mt-5">
+    <div class="-m-1.5 overflow-x-auto">
+      <div class="p-1.5 min-w-full inline-block align-middle">
+        <div class="overflow-hidden">
+          {% if transactions %}
+          <table
+            class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
+          >
+            <thead>
+              <tr>
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Reference ID
+                </th>
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Date
+                </th>
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  From (wallet ID)
+                </th>
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  To (wallet ID)
+                </th>
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Type
+                </th>
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Narration
+                </th>
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Amount
+                </th>
+              </tr>
+            </thead>
+
+            {% for transaction in transactions %}
+            <tbody>
+              <tr
+                class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-900 dark:even:bg-slate-800"
+              >
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"
+                >
+                  {{ transaction.reference_id }}
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200"
+                >
+                  {{ transaction.created_at }}
+                </td>
+
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200"
+                >
+                  {{ transaction.sender_id }}
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200"
+                >
+                  {{ transaction.receiver_id }}
+                </td>
+                
+                {% if transaction.transaction_type == "CREDIT" %}
+                <td
+                class="px-6 py-4 whitespace-nowrap text-sm text-green-600 dark:text-gray-200"
+              >
+              {{ transaction.transaction_type }}
+              </td>
+              {% else %}
+              <td
+              class="px-6 py-4 whitespace-nowrap text-sm text-red-600 dark:text-gray-200"
+            >
+            {{ transaction.transaction_type }}
+            </td>
+              {% endif %}
+                  
+
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200"
+                >
+                  {{ transaction.narration }}
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200"
+                >
+                  {{ transaction.amount }}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% else %}
+          <div
+            class="min-h-[15rem] flex flex-col bg-white border shadow-sm rounded-xl dark:bg-gray-800 dark:border-gray-700 dark:shadow-slate-700/[.7]"
+          >
+            <div
+              class="flex flex-auto flex-col justify-center items-center p-4 md:p-5"
+            >
+              <svg
+                class="max-w-[5rem]"
+                viewBox="0 0 375 428"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M254.509 253.872L226.509 226.872"
+                  class="stroke-gray-400 dark:stroke-white"
+                  stroke="currentColor"
+                  stroke-width="7"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M237.219 54.3721C254.387 76.4666 264.609 104.226 264.609 134.372C264.609 206.445 206.182 264.872 134.109 264.872C62.0355 264.872 3.60864 206.445 3.60864 134.372C3.60864 62.2989 62.0355 3.87207 134.109 3.87207C160.463 3.87207 184.993 11.6844 205.509 25.1196"
+                  class="stroke-gray-400 dark:stroke-white"
+                  stroke="currentColor"
+                  stroke-width="7"
+                  stroke-linecap="round"
+                />
+                <rect
+                  x="270.524"
+                  y="221.872"
+                  width="137.404"
+                  height="73.2425"
+                  rx="36.6212"
+                  transform="rotate(40.8596 270.524 221.872)"
+                  class="fill-gray-400 dark:fill-white"
+                  fill="currentColor"
+                />
+                <ellipse
+                  cx="133.109"
+                  cy="404.372"
+                  rx="121.5"
+                  ry="23.5"
+                  class="fill-gray-400 dark:fill-white"
+                  fill="currentColor"
+                />
+                <path
+                  d="M111.608 188.872C120.959 177.043 141.18 171.616 156.608 188.872"
+                  class="stroke-gray-400 dark:stroke-white"
+                  stroke="currentColor"
+                  stroke-width="7"
+                  stroke-linecap="round"
+                />
+                <ellipse
+                  cx="96.6084"
+                  cy="116.872"
+                  rx="9"
+                  ry="12"
+                  class="fill-gray-400 dark:fill-white"
+                  fill="currentColor"
+                />
+                <ellipse
+                  cx="172.608"
+                  cy="117.872"
+                  rx="9"
+                  ry="12"
+                  class="fill-gray-400 dark:fill-white"
+                  fill="currentColor"
+                />
+                <path
+                  d="M194.339 147.588C189.547 148.866 189.114 142.999 189.728 138.038C189.918 136.501 191.738 135.958 192.749 137.131C196.12 141.047 199.165 146.301 194.339 147.588Z"
+                  class="fill-gray-400 dark:fill-white"
+                  fill="currentColor"
+                />
+              </svg>
+              <p class="mt-5 text-sm text-gray-500 dark:text-gray-500">
+                No transactions at the moment...
+              </p>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== END MAIN CONTENT ========== -->
+</div>
+
+{% endblock content %}

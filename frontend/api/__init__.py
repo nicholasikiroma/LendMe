@@ -1,0 +1,4 @@
+USER_API_URL = "http://127.0.0.1:5001"
+LOAN_API_URL = "http://127.0.0.1:5002"
+WALLET_API_URL = "http://127.0.0.1:5003"
+RISK_API_URL = "http://127.0.0.1:5004"

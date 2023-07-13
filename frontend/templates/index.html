@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/dist/css/output.css" />
+    <title>LendMe | Home</title>
+  </head>
+  <body>
+    <div class="bg-slate-100 dark:bg-slate-900 h-screen overflow-auto">
+      <header
+        class="flex flex-wrap sm:justify-start sm:flex-nowrap z-50 w-full text-sm py-3 sm:py-0"
+      >
+        <nav
+          class="relative max-w-7xl w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8"
+          aria-label="Global"
+        >
+          <div class="flex items-center justify-between">
+            <a
+              class="flex-none text-2xl text-blue-600 font-semibold dark:text-white"
+              href="#"
+              aria-label="Brand"
+              >LendMe</a
+            >
+            <div class="sm:hidden">
+              <button
+                type="button"
+                class="hs-collapse-toggle p-2 inline-flex justify-center items-center gap-2 rounded-md border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-slate-900 dark:hover:bg-slate-800 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-offset-gray-800"
+                data-hs-collapse="#navbar-collapse-with-animation"
+                aria-controls="navbar-collapse-with-animation"
+                aria-label="Toggle navigation"
+              >
+                <svg
+                  class="hs-collapse-open:hidden w-4 h-4"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
+                  />
+                </svg>
+                <svg
+                  class="hs-collapse-open:block hidden w-4 h-4"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div
+            id="navbar-collapse-with-animation"
+            class="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow sm:block"
+          >
+            <div
+              class="flex flex-col gap-y-4 gap-x-0 mt-5 sm:flex-row sm:items-center sm:justify-end sm:gap-y-0 sm:gap-x-7 sm:mt-0 sm:pl-7"
+            >
+              <a
+                class="font-medium text-blue-600 sm:py-6 dark:text-blue-500"
+                href="#"
+                aria-current="page"
+                >Home</a
+              >
+              <a
+                class="font-medium text-gray-500 hover:text-gray-400 sm:py-6 dark:text-gray-400 dark:hover:text-gray-500"
+                href="#"
+                >How it works</a
+              >
+              <a
+                class="font-medium text-gray-500 hover:text-gray-400 sm:py-6 dark:text-gray-400 dark:hover:text-gray-500"
+                href="#"
+                >Features</a
+              >
+              <a
+                class="font-medium text-gray-500 hover:text-gray-400 sm:py-6 dark:text-gray-400 dark:hover:text-gray-500"
+                href="#"
+                >About</a
+              >
+
+              <a
+                class="flex items-center gap-x-2 font-medium text-gray-500 hover:text-blue-600 sm:border-l sm:border-gray-300 sm:my-6 sm:pl-6 dark:border-gray-700 dark:text-gray-400 dark:hover:text-blue-500"
+                href="{{ url_for('user_auth.login') }}"
+              >
+                <svg
+                  class="w-4 h-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"
+                  />
+                </svg>
+                Log in
+              </a>
+              <div
+                class="hs-dropdown"
+                data-hs-dropdown-placement="bottom-right"
+                data-hs-dropdown-offset="30"
+              >
+                <a
+                  class="hs-dropdown-toggle hs-dark-mode group flex items-center text-gray-600 hover:text-blue-600 font-medium dark:text-gray-400 dark:hover:text-gray-500"
+                  href="javascript:;"
+                >
+                  <svg
+                    class="hs-dark-mode-active:hidden block w-4 h-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278zM4.858 1.311A7.269 7.269 0 0 0 1.025 7.71c0 4.02 3.279 7.276 7.319 7.276a7.316 7.316 0 0 0 5.205-2.162c-.337.042-.68.063-1.029.063-4.61 0-8.343-3.714-8.343-8.29 0-1.167.242-2.278.681-3.286z"
+                    />
+                  </svg>
+                  <svg
+                    class="hs-dark-mode-active:block hidden w-4 h-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"
+                    />
+                  </svg>
+                </a>
+
+                <div
+                  id="selectThemeDropdown"
+                  class="hs-dropdown-menu hs-dropdown-open:opacity-100 mt-2 hidden z-10 transition-[margin,opacity] opacity-0 duration-300 mb-2 origin-bottom-left bg-white shadow-md rounded-lg p-2 space-y-1 dark:bg-gray-800 dark:border dark:border-gray-700 dark:divide-gray-700"
+                >
+                  <a
+                    class="hs-auto-mode-active:bg-gray-100 flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                    href="javascript:;"
+                    data-hs-theme-click-value="auto"
+                  >
+                    Auto (system default)
+                  </a>
+                  <a
+                    class="hs-default-mode-active:bg-gray-100 flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                    href="javascript:;"
+                    data-hs-theme-click-value="default"
+                  >
+                    Default (light mode)
+                  </a>
+                  <a
+                    class="hs-dark-mode-active:bg-gray-700 flex items-center gap-x-3.5 py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                    href="javascript:;"
+                    data-hs-theme-click-value="dark"
+                  >
+                    Dark
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <!-- Hero -->
+      <div class="max-w-[85rem] mx-auto pt-1 px-4 sm:px-6 lg:px-8">
+        <!-- Grid -->
+        <div
+          class="grid md:grid-cols-2 gap-4 md:gap-8 xl:gap-20 md:items-center"
+        >
+          <div>
+            <h1
+              class="block text-3xl font-bold text-gray-800 sm:text-4xl lg:text-6xl lg:leading-tight dark:text-white"
+            >
+            Make a Difference and Earn Profits <span class="text-blue-600">LendMe</span>
+            </h1>
+            <p class="mt-3 text-lg text-gray-800 dark:text-gray-400">
+              Say goodbye to traditional banking limitations and embrace the power of community-driven lending.
+            </p>
+
+            <!-- Buttons -->
+            <div class="mt-7 grid gap-3 w-full sm:inline-flex">
+              <a
+                class="inline-flex justify-center items-center gap-x-3 text-center bg-blue-600 hover:bg-blue-700 border border-transparent text-sm lg:text-base text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-white transition ease-in-out py-3 px-4 hover:-translate-y-1 hover:scale-110 dark:focus:ring-offset-gray-800"
+                href="{{ 'dashboard.register' }}"
+              >
+              Get Started
+                <svg
+                  class="w-2.5 h-2.5"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                >
+                  <path
+                    d="M5.27921 2L10.9257 7.64645C11.1209 7.84171 11.1209 8.15829 10.9257 8.35355L5.27921 14"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </a>
+            </div>
+            <!-- End Buttons -->
+          </div>
+          <!-- End Col -->
+
+          <div class="relative ml-4">
+            <img
+              class="w-full rounded-md"
+              src="https://images.unsplash.com/photo-1665686377065-08ba896d16fd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=700&h=800&q=80"
+              alt="Image Description"
+            />
+            <div
+              class="absolute inset-0 -z-[1] bg-gradient-to-tr from-gray-200 via-white/0 to-white/0 w-full h-full rounded-md mt-4 -mb-4 mr-4 -ml-4 lg:mt-6 lg:-mb-6 lg:mr-6 lg:-ml-6 dark:from-slate-800 dark:via-slate-900/0 dark:to-slate-900/0"
+            ></div>
+
+            <!-- SVG-->
+            <div class="absolute bottom-0 left-0">
+              <svg
+                class="w-2/3 ml-auto h-auto text-slate-100 dark:text-slate-900"
+                width="630"
+                height="451"
+                viewBox="0 0 630 451"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="531"
+                  y="352"
+                  width="99"
+                  height="99"
+                  fill="currentColor"
+                />
+                <rect
+                  x="140"
+                  y="352"
+                  width="106"
+                  height="99"
+                  fill="currentColor"
+                />
+                <rect
+                  x="482"
+                  y="402"
+                  width="64"
+                  height="49"
+                  fill="currentColor"
+                />
+                <rect
+                  x="433"
+                  y="402"
+                  width="63"
+                  height="49"
+                  fill="currentColor"
+                />
+                <rect
+                  x="384"
+                  y="352"
+                  width="49"
+                  height="50"
+                  fill="currentColor"
+                />
+                <rect
+                  x="531"
+                  y="328"
+                  width="50"
+                  height="50"
+                  fill="currentColor"
+                />
+                <rect
+                  x="99"
+                  y="303"
+                  width="49"
+                  height="58"
+                  fill="currentColor"
+                />
+                <rect
+                  x="99"
+                  y="352"
+                  width="49"
+                  height="50"
+                  fill="currentColor"
+                />
+                <rect
+                  x="99"
+                  y="392"
+                  width="49"
+                  height="59"
+                  fill="currentColor"
+                />
+                <rect
+                  x="44"
+                  y="402"
+                  width="66"
+                  height="49"
+                  fill="currentColor"
+                />
+                <rect
+                  x="234"
+                  y="402"
+                  width="62"
+                  height="49"
+                  fill="currentColor"
+                />
+                <rect
+                  x="334"
+                  y="303"
+                  width="50"
+                  height="49"
+                  fill="currentColor"
+                />
+                <rect x="581" width="49" height="49" fill="currentColor" />
+                <rect x="581" width="49" height="64" fill="currentColor" />
+                <rect
+                  x="482"
+                  y="123"
+                  width="49"
+                  height="49"
+                  fill="currentColor"
+                />
+                <rect
+                  x="507"
+                  y="124"
+                  width="49"
+                  height="24"
+                  fill="currentColor"
+                />
+                <rect
+                  x="531"
+                  y="49"
+                  width="99"
+                  height="99"
+                  fill="currentColor"
+                />
+              </svg>
+            </div>
+            <!-- End SVG-->
+          </div>
+          <!-- End Col -->
+        </div>
+        <!-- End Grid -->
+      </div>
+      <div
+        class="absolute left-[50%] translate-x-[-50%] bottom-3 dark:text-white"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="w-7 h-7 animate-bounce"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </div>
+      <!-- End Hero -->
+    </div>
+    <!--How it works section -->
+    <div
+      class="relative isolate overflow-hidden bg-white px-6 py-1 sm:py-1 lg:overflow-visible lg:px-0 mt-10"
+    >
+      <div class="absolute inset-0 -z-10 overflow-hidden">
+        <svg
+          class="absolute left-[max(50%,25rem)] top-0 h-[64rem] w-[128rem] -translate-x-1/2 stroke-gray-200 [mask-image:radial-gradient(64rem_64rem_at_top,white,transparent)]"
+          aria-hidden="true"
+        >
+          <defs>
+            <pattern
+              id="e813992c-7d03-4cc4-a2bd-151760b470a0"
+              width="200"
+              height="200"
+              x="50%"
+              y="-1"
+              patternUnits="userSpaceOnUse"
+            >
+              <path d="M100 200V.5M.5 .5H200" fill="none" />
+            </pattern>
+          </defs>
+          <svg x="50%" y="-1" class="overflow-visible fill-gray-50">
+            <path
+              d="M-100.5 0h201v201h-201Z M699.5 0h201v201h-201Z M499.5 400h201v201h-201Z M-300.5 600h201v201h-201Z"
+              stroke-width="0"
+            />
+          </svg>
+          <rect
+            width="100%"
+            height="100%"
+            stroke-width="0"
+            fill="url(#e813992c-7d03-4cc4-a2bd-151760b470a0)"
+          />
+        </svg>
+      </div>
+      <div
+        class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start lg:gap-y-10"
+      >
+        <div
+          class="lg:col-span-2 lg:col-start-1 lg:row-start-1 lg:mx-auto lg:grid lg:w-full lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8"
+        >
+          <div class="lg:pr-4">
+            <div class="lg:max-w-lg">
+              <p class="text-base font-semibold leading-7 text-indigo-600">
+                Lend & Earn with Ease
+              </p>
+              <h1
+                class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl"
+              >
+                How it works
+              </h1>
+              <p class="mt-6 text-xl leading-8 text-gray-700">
+                LendME connects lenders and borrowers, empowering individuals to lend directly to those in need while earning attractive returns on their investments.
+                Whether you're looking to diversify your portfolio,
+                support aspiring entrepreneurs, or simply earn passive income,
+                LendME offers a secure and transparent environment to achieve your financial goals.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="-ml-12 -mt-12 p-12 lg:sticky lg:top-4 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:overflow-hidden"
+        >
+          <img
+            class="w-[48rem] max-w-none rounded-xl bg-gray-900 shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem]"
+            src="{{ url_for('static', filename='images/dashboard.png')}}"
+            alt=""
+          />
+        </div>
+        <div
+          class="lg:col-span-2 lg:col-start-1 lg:row-start-2 lg:mx-auto lg:grid lg:w-full lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8"
+        >
+          <div class="lg:pr-4">
+            <div class="max-w-xl text-base leading-7 text-gray-700 lg:max-w-lg">
+              <p>
+                Experience the freedom of direct financial connections and
+                join the LendME community today to shape
+                a brighter financial future for everyone involved.
+              </p>
+              <ul role="list" class="mt-8 space-y-8 text-gray-600">
+                <li class="flex gap-x-3">
+                  <svg
+                    class="mt-1 h-5 w-5 flex-none text-indigo-600"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.5 17a4.5 4.5 0 01-1.44-8.765 4.5 4.5 0 018.302-3.046 3.5 3.5 0 014.504 4.272A4 4 0 0115 17H5.5zm3.75-2.75a.75.75 0 001.5 0V9.66l1.95 2.1a.75.75 0 101.1-1.02l-3.25-3.5a.75.75 0 00-1.1 0l-3.25 3.5a.75.75 0 101.1 1.02l1.95-2.1v4.59z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                  <span
+                    ><strong class="font-semibold text-gray-900"
+                      >Discover or create loan opportunities</strong
+                    >
+                    Put excess funds to work with ease by creating lending opportunities for all to see.
+                    By lending out your excess funds, you become a vital part of our community-driven ecosystem,
+                    where individuals like you support each other's financial goals</span
+                  >
+                </li>
+                <li class="flex gap-x-3">
+                  <svg
+                    class="mt-1 h-5 w-5 flex-none text-indigo-600"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                  <span
+                    ><strong class="font-semibold text-gray-900"
+                      >Apply or Review applications</strong
+                    >
+                    Rest assured,
+                    we prioritize the safety and security of your investments through robust risk management and verification processes.</span
+                  >
+                </li>
+                <li class="flex gap-x-3">
+                  <svg
+                    class="mt-1 h-5 w-5 flex-none text-indigo-600"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M4.632 3.533A2 2 0 016.577 2h6.846a2 2 0 011.945 1.533l1.976 8.234A3.489 3.489 0 0016 11.5H4c-.476 0-.93.095-1.344.267l1.976-8.234z"
+                    />
+                    <path
+                      fill-rule="evenodd"
+                      d="M4 13a2 2 0 100 4h12a2 2 0 100-4H4zm11.24 2a.75.75 0 01.75-.75H16a.75.75 0 01.75.75v.01a.75.75 0 01-.75.75h-.01a.75.75 0 01-.75-.75V15zm-2.25-.75a.75.75 0 00-.75.75v.01c0 .414.336.75.75.75H13a.75.75 0 00.75-.75V15a.75.75 0 00-.75-.75h-.01z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                  <span
+                    ><strong class="font-semibold text-gray-900"
+                      >Disburse loans and repay loans</strong
+                    >
+                    Ac tincidunt sapien vehicula erat auctor pellentesque
+                    rhoncus. Et magna sit morbi lobortis.</span
+                  >
+                </li>
+              </ul>
+              <p class="mt-8">
+                Join LendME today to experience the future of lending with LendME,
+                where financial empowerment meets social responsibility.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Features -->
+    <div class="bg-slate-50 dark:bg-slate-900">
+      <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+        <div class="relative p-6 md:p-16">
+          <!-- Grid -->
+          <div
+            class="relative z-10 lg:grid lg:grid-cols-12 lg:gap-16 lg:items-center"
+          >
+            <div class="mb-10 lg:mb-0 lg:col-span-6 lg:col-start-8 lg:order-2">
+              <h2
+                class="text-2xl text-gray-800 font-bold sm:text-2xl dark:text-gray-200"
+              >
+                Lend on the go
+              </h2>
+
+              <!-- Tab Navs -->
+              <nav
+                class="grid gap-4 mt-5 md:mt-10"
+                aria-label="Tabs"
+                role="tablist"
+              >
+                <button
+                  type="button"
+                  class="hs-tab-active:bg-white hs-tab-active:shadow-md hs-tab-active:hover:border-transparent text-left hover:bg-gray-200 p-4 md:p-5 rounded-xl dark:hs-tab-active:bg-slate-900 dark:hover:bg-gray-700 active"
+                  id="tabs-with-card-item-1"
+                  data-hs-tab="#tabs-with-card-1"
+                  aria-controls="tabs-with-card-1"
+                  role="tab"
+                >
+                  <span class="flex">
+                    <svg
+                      class="flex-shrink-0 mt-2 h-6 w-6 md:w-7 md:h-7 hs-tab-active:text-blue-600 text-gray-800 dark:hs-tab-active:text-blue-500 dark:text-gray-200"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M5.5 2A3.5 3.5 0 0 0 2 5.5v5A3.5 3.5 0 0 0 5.5 14h5a3.5 3.5 0 0 0 3.5-3.5V8a.5.5 0 0 1 1 0v2.5a4.5 4.5 0 0 1-4.5 4.5h-5A4.5 4.5 0 0 1 1 10.5v-5A4.5 4.5 0 0 1 5.5 1H8a.5.5 0 0 1 0 1H5.5z"
+                      />
+                      <path d="M16 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                    </svg>
+                    <span class="grow ml-6">
+                      <span
+                        class="block text-lg font-semibold hs-tab-active:text-blue-600 text-gray-800 dark:hs-tab-active:text-blue-500 dark:text-gray-200"
+                        >Lend on the go</span
+                      >
+                      <span
+                        class="block mt-1 text-gray-800 dark:hs-tab-active:text-gray-200 dark:text-gray-200"
+                        >Put excess funds to work with ease by creating lending opportunities for all to see.
+                        By lending out your excess funds, you become a vital part of our community-driven ecosystem,
+                        where individuals like you support each other's financial goals</span
+                      >
+                    </span>
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  class="hs-tab-active:bg-white hs-tab-active:shadow-md hs-tab-active:hover:border-transparent text-left hover:bg-gray-200 p-4 md:p-5 rounded-xl dark:hs-tab-active:bg-slate-900 dark:hover:bg-gray-700"
+                  id="tabs-with-card-item-2"
+                  data-hs-tab="#tabs-with-card-2"
+                  aria-controls="tabs-with-card-2"
+                  role="tab"
+                >
+                  <span class="flex">
+                    <svg
+                      class="flex-shrink-0 mt-2 h-6 w-6 md:w-7 md:h-7 hs-tab-active:text-blue-600 text-gray-800 dark:hs-tab-active:text-blue-500 dark:text-gray-200"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M0 0h1v15h15v1H0V0Zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07Z"
+                      />
+                    </svg>
+                    <span class="grow ml-6">
+                      <span
+                        class="block text-lg font-semibold hs-tab-active:text-blue-600 text-gray-800 dark:hs-tab-active:text-blue-500 dark:text-gray-200"
+                        >Secure Investments</span
+                      >
+                      <span
+                        class="block mt-1 text-gray-800 dark:hs-tab-active:text-gray-200 dark:text-gray-200"
+                        >Rest assured,
+                        we prioritize the safety and security of your investments through robust risk management
+                        and verification processes.</span
+                      >
+                    </span>
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  class="hs-tab-active:bg-white hs-tab-active:shadow-md hs-tab-active:hover:border-transparent text-left hover:bg-gray-200 p-4 md:p-5 rounded-xl dark:hs-tab-active:bg-slate-900 dark:hover:bg-gray-700"
+                  id="tabs-with-card-item-3"
+                  data-hs-tab="#tabs-with-card-3"
+                  aria-controls="tabs-with-card-3"
+                  role="tab"
+                >
+                  <span class="flex">
+                    <svg
+                      class="flex-shrink-0 mt-2 h-6 w-6 md:w-7 md:h-7 hs-tab-active:text-blue-600 text-gray-800 dark:hs-tab-active:text-blue-500 dark:text-gray-200"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      fill="currentColor"
+                      viewBox="0 0 16 16"
+                    >
+                      <path
+                        d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641l2.5-8.5zM6.374 1 4.168 8.5H7.5a.5.5 0 0 1 .478.647L6.78 13.04 11.478 7H8a.5.5 0 0 1-.474-.658L9.306 1H6.374z"
+                      />
+                    </svg>
+                    <span class="grow ml-6">
+                      <span
+                        class="block text-lg font-semibold hs-tab-active:text-blue-600 text-gray-800 dark:hs-tab-active:text-blue-500 dark:text-gray-200"
+                        >Borrow with ease</span
+                      >
+                      <span
+                        class="block mt-1 text-gray-800 dark:hs-tab-active:text-gray-200 dark:text-gray-200"
+                        >Leverage on the lending opportunities on our platform to finance your urgent needs.</span
+                      >
+                    </span>
+                  </span>
+                </button>
+              </nav>
+              <!-- End Tab Navs -->
+            </div>
+            <!-- End Col -->
+
+            <div class="lg:col-span-6">
+              <div class="relative">
+                <!-- Tab Content -->
+                <div>
+                  <div
+                    id="tabs-with-card-1"
+                    role="tabpanel"
+                    aria-labelledby="tabs-with-card-item-1"
+                  >
+                    <img
+                      class="shadow-xl shadow-gray-200 rounded-xl dark:shadow-gray-900/[.2]"
+                      src="https://images.unsplash.com/photo-1605629921711-2f6b00c6bbf4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&h=1220&q=80"
+                      alt="Image Description"
+                    />
+                  </div>
+
+                  <div
+                    id="tabs-with-card-2"
+                    class="hidden"
+                    role="tabpanel"
+                    aria-labelledby="tabs-with-card-item-2"
+                  >
+                    <img
+                      class="shadow-xl shadow-gray-200 rounded-xl dark:shadow-gray-900/[.2]"
+                      src="https://images.unsplash.com/photo-1665686306574-1ace09918530?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&h=1220&q=80"
+                      alt="Image Description"
+                    />
+                  </div>
+
+                  <div
+                    id="tabs-with-card-3"
+                    class="hidden"
+                    role="tabpanel"
+                    aria-labelledby="tabs-with-card-item-3"
+                  >
+                    <img
+                      class="shadow-xl shadow-gray-200 rounded-xl dark:shadow-gray-900/[.2]"
+                      src="https://images.unsplash.com/photo-1598929213452-52d72f63e307?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&h=1220&q=80"
+                      alt="Image Description"
+                    />
+                  </div>
+                </div>
+                <!-- End Tab Content -->
+
+                <!-- SVG Element -->
+                <div
+                  class="hidden absolute top-0 right-0 translate-x-20 md:block lg:translate-x-20"
+                >
+                  <svg
+                    class="w-16 h-auto text-orange-500"
+                    width="121"
+                    height="135"
+                    viewBox="0 0 121 135"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M5 16.4754C11.7688 27.4499 21.2452 57.3224 5 89.0164"
+                      stroke="currentColor"
+                      stroke-width="10"
+                      stroke-linecap="round"
+                    />
+                    <path
+                      d="M33.6761 112.104C44.6984 98.1239 74.2618 57.6776 83.4821 5"
+                      stroke="currentColor"
+                      stroke-width="10"
+                      stroke-linecap="round"
+                    />
+                    <path
+                      d="M50.5525 130C68.2064 127.495 110.731 117.541 116 78.0874"
+                      stroke="currentColor"
+                      stroke-width="10"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                </div>
+                <!-- End SVG Element -->
+              </div>
+            </div>
+            <!-- End Col -->
+          </div>
+          <!-- End Grid -->
+
+          <!-- Background Color -->
+          <div class="absolute inset-0 grid grid-cols-12 w-full">
+            <div
+              class="col-span-full lg:col-span-7 lg:col-start-6 bg-gray-100 w-full h-5/6 rounded-xl sm:h-3/4 lg:h-full dark:bg-white/[.075]"
+            ></div>
+          </div>
+          <!-- End Background Color -->
+        </div>
+      </div>
+    </div>
+
+    <!-- End Features -->
+
+<!-- About -->
+<div class="max-w-5xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+  <!-- Title -->
+  <div class="max-w-2xl mx-auto text-center mb-10 lg:mb-14">
+    <h2 class="text-2xl font-bold md:text-4xl md:leading-tight dark:text-white">About <span class="text-blue-600">LendME</span></h2>
+    <p class="mt-1 text-gray-600 dark:text-gray-400">Creative people</p>
+  </div>
+  <!-- End Title -->
+
+  <!-- Card -->
+  <div class="mt-12 flex justify-center">
+    <div class="border border-gray-200 p-1.5 pl-5 rounded-full dark:border-gray-700">
+      <div class="flex items-center gap-x-3">
+        <span class="text-sm text-gray-500">Want learn more about the project?</span>
+        <a class="inline-flex justify-center items-center gap-x-2 text-center bg-white border hover:border-gray-300 text-sm text-blue-600 hover:text-blue-700 font-medium hover:shadow-sm rounded-full focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 focus:ring-offset-white transition py-3 px-4 dark:bg-slate-900 dark:border-gray-700 dark:hover:border-gray-600 dark:text-blue-600 dark:hover:text-blue-500 dark:hover:shadow-slate-700/[.7] dark:focus:ring-gray-700 dark:focus:ring-offset-gray-800" href="#">
+          GitHub Repository
+          <svg class="w-2.5 h-2.5" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M5.27921 2L10.9257 7.64645C11.1209 7.84171 11.1209 8.15829 10.9257 8.35355L5.27921 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- End Card -->
+</div>
+<!-- End About -->
+
+    <!--Footer-->
+
+    <footer class="bg-slate-50">
+      <div class="max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 lg:pt-20 mx-auto">
+        <!-- Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+          <div class="col-span-full lg:col-span-1">
+            <a
+              class="flex-none text-xl font-semibold text-gray-900"
+              href="#"
+              aria-label="Brand"
+              >LendMe</a
+            >
+          </div>
+          <!-- End Col -->
+
+          <div class="col-span-1">
+            <h4 class="font-semibold text-gray-100">Product</h4>
+
+            <div class="mt-3 grid space-y-3">
+              <p>
+                <a
+                  class="inline-flex gap-x-2 text-gray-400 hover:text-gray-200"
+                  href="#"
+                  >Pricing</a
+                >
+              </p>
+              <p>
+                <a
+                  class="inline-flex gap-x-2 text-gray-400 hover:text-gray-200"
+                  href="#"
+                  >Changelog</a
+                >
+              </p>
+              <p>
+                <a
+                  class="inline-flex gap-x-2 text-gray-400 hover:text-gray-200"
+                  href="#"
+                  >Docs</a
+                >
+              </p>
+            </div>
+          </div>
+          <!-- End Col -->
+
+          <div class="col-span-1">
+            <h4 class="font-semibold text-gray-100">Company</h4>
+
+            <div class="mt-3 grid space-y-3">
+              <p>
+                <a
+                  class="inline-flex gap-x-2 text-gray-400 hover:text-gray-200"
+                  href="#"
+                  >About us</a
+                >
+              </p>
+              <p>
+                <a
+                  class="inline-flex gap-x-2 text-gray-400 hover:text-gray-200"
+                  href="#"
+                  >Blog</a
+                >
+              </p>
+              <p>
+                <a
+                  class="inline-flex gap-x-2 text-gray-400 hover:text-gray-200"
+                  href="#"
+                  >Careers</a
+                >
+                <span
+                  class="inline ml-1 text-xs bg-blue-700 text-white py-1 px-2 rounded-md whitespace-nowrap"
+                  >We're hiring</span
+                >
+              </p>
+              <p>
+                <a
+                  class="inline-flex gap-x-2 text-gray-400 hover:text-gray-200"
+                  href="#"
+                  >Customers</a
+                >
+              </p>
+            </div>
+          </div>
+          <!-- End Col -->
+
+          <div class="col-span-2">
+            <h4 class="font-semibold text-gray-100">Stay up to date</h4>
+
+            <form>
+              <div
+                class="mt-4 flex flex-col items-center gap-2 sm:flex-row sm:gap-3 bg-white rounded-md p-2"
+              >
+                <div class="w-full">
+                  <label for="hero-input" class="sr-only">Search</label>
+                  <input
+                    type="text"
+                    id="hero-input"
+                    name="hero-input"
+                    class="py-3 px-4 block w-full border-transparent shadow-sm rounded-md focus:z-10 focus:border-blue-500 focus:ring-blue-500"
+                    placeholder="Enter your email"
+                  />
+                </div>
+                <a
+                  class="w-full sm:w-auto whitespace-nowrap inline-flex justify-center items-center gap-x-3 text-center bg-blue-600 hover:bg-blue-700 border border-transparent text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-white transition py-3 px-4"
+                  href="#"
+                >
+                  Subscribe
+                </a>
+              </div>
+              <p class="mt-3 text-sm text-gray-400">
+                New UI kits or big discounts. Never spam.
+              </p>
+            </form>
+          </div>
+          <!-- End Col -->
+        </div>
+        <!-- End Grid -->
+
+        <div
+          class="mt-5 sm:mt-12 grid gap-y-2 sm:gap-y-0 sm:flex sm:justify-between sm:items-center"
+        >
+          <div class="flex justify-between items-center">
+            <p class="text-sm text-gray-400">
+              © 2022 Preline. All rights reserved.
+            </p>
+          </div>
+          <!-- End Col -->
+
+          <!-- Social Brands -->
+          <div>
+            <a
+              class="inline-flex justify-center items-center gap-x-3.5 w-10 h-10 text-center text-gray-200 hover:bg-white/[.1] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900 transition"
+              href="#"
+            >
+              <svg
+                class="w-4 h-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"
+                />
+              </svg>
+            </a>
+            <a
+              class="inline-flex justify-center items-center gap-x-3.5 w-10 h-10 text-center text-gray-200 hover:bg-white/[.1] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900 transition"
+              href="#"
+            >
+              <svg
+                class="w-4 h-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z"
+                />
+              </svg>
+            </a>
+            <a
+              class="inline-flex justify-center items-center gap-x-3.5 w-10 h-10 text-center text-gray-200 hover:bg-white/[.1] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900 transition"
+              href="#"
+            >
+              <svg
+                class="w-4 h-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"
+                />
+              </svg>
+            </a>
+            <a
+              class="inline-flex justify-center items-center gap-x-3.5 w-10 h-10 text-center text-gray-200 hover:bg-white/[.1] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900 transition"
+              href="#"
+            >
+              <svg
+                class="w-4 h-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+                />
+              </svg>
+            </a>
+            <a
+              class="inline-flex justify-center items-center gap-x-3.5 w-10 h-10 text-center text-gray-200 hover:bg-white/[.1] rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-gray-900 transition"
+              href="#"
+            >
+              <svg
+                class="w-4 h-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M3.362 10.11c0 .926-.756 1.681-1.681 1.681S0 11.036 0 10.111C0 9.186.756 8.43 1.68 8.43h1.682v1.68zm.846 0c0-.924.756-1.68 1.681-1.68s1.681.756 1.681 1.68v4.21c0 .924-.756 1.68-1.68 1.68a1.685 1.685 0 0 1-1.682-1.68v-4.21zM5.89 3.362c-.926 0-1.682-.756-1.682-1.681S4.964 0 5.89 0s1.68.756 1.68 1.68v1.682H5.89zm0 .846c.924 0 1.68.756 1.68 1.681S6.814 7.57 5.89 7.57H1.68C.757 7.57 0 6.814 0 5.89c0-.926.756-1.682 1.68-1.682h4.21zm6.749 1.682c0-.926.755-1.682 1.68-1.682.925 0 1.681.756 1.681 1.681s-.756 1.681-1.68 1.681h-1.681V5.89zm-.848 0c0 .924-.755 1.68-1.68 1.68A1.685 1.685 0 0 1 8.43 5.89V1.68C8.43.757 9.186 0 10.11 0c.926 0 1.681.756 1.681 1.68v4.21zm-1.681 6.748c.926 0 1.682.756 1.682 1.681S11.036 16 10.11 16s-1.681-.756-1.681-1.68v-1.682h1.68zm0-.847c-.924 0-1.68-.755-1.68-1.68 0-.925.756-1.681 1.68-1.681h4.21c.924 0 1.68.756 1.68 1.68 0 .926-.756 1.681-1.68 1.681h-4.21z"
+                />
+              </svg>
+            </a>
+          </div>
+          <!-- End Social Brands -->
+        </div>
+      </div>
+    </footer>
+
+    <script src="{{ url_for('serve_preline_js') }}"></script>
+
+    <script>
+      const HSThemeAppearance = {
+        init() {
+          const defaultTheme = "default";
+          let theme = localStorage.getItem("hs_theme") || defaultTheme;
+
+          if (document.querySelector("html").classList.contains("dark")) return;
+          this.setAppearance(theme);
+        },
+        _resetStylesOnLoad() {
+          const $resetStyles = document.createElement("style");
+          $resetStyles.innerText = `*{transition: unset !important;}`;
+          $resetStyles.setAttribute("data-hs-appearance-onload-styles", "");
+          document.head.appendChild($resetStyles);
+          return $resetStyles;
+        },
+        setAppearance(theme, saveInStore = true, dispatchEvent = true) {
+          const $resetStylesEl = this._resetStylesOnLoad();
+
+          if (saveInStore) {
+            localStorage.setItem("hs_theme", theme);
+          }
+
+          if (theme === "auto") {
+            theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "default";
+          }
+
+          document.querySelector("html").classList.remove("dark");
+          document.querySelector("html").classList.remove("default");
+          document.querySelector("html").classList.remove("auto");
+
+          document
+            .querySelector("html")
+            .classList.add(this.getOriginalAppearance());
+
+          setTimeout(() => {
+            $resetStylesEl.remove();
+          });
+
+          if (dispatchEvent) {
+            window.dispatchEvent(
+              new CustomEvent("on-hs-appearance-change", { detail: theme })
+            );
+          }
+        },
+        getAppearance() {
+          let theme = this.getOriginalAppearance();
+          if (theme === "auto") {
+            theme = window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "default";
+          }
+          return theme;
+        },
+        getOriginalAppearance() {
+          const defaultTheme = "default";
+          return localStorage.getItem("hs_theme") || defaultTheme;
+        },
+      };
+      HSThemeAppearance.init();
+
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", (e) => {
+          if (HSThemeAppearance.getOriginalAppearance() === "auto") {
+            HSThemeAppearance.setAppearance("auto", false);
+          }
+        });
+
+      window.addEventListener("load", () => {
+        const $clickableThemes = document.querySelectorAll(
+          "[data-hs-theme-click-value]"
+        );
+        const $switchableThemes = document.querySelectorAll(
+          "[data-hs-theme-switch]"
+        );
+
+        $clickableThemes.forEach(($item) => {
+          $item.addEventListener("click", () =>
+            HSThemeAppearance.setAppearance(
+              $item.getAttribute("data-hs-theme-click-value"),
+              true,
+              $item
+            )
+          );
+        });
+
+        $switchableThemes.forEach(($item) => {
+          $item.addEventListener("change", (e) => {
+            HSThemeAppearance.setAppearance(
+              e.target.checked ? "dark" : "default"
+            );
+          });
+
+          $item.checked = HSThemeAppearance.getAppearance() === "dark";
+        });
+
+        window.addEventListener("on-hs-appearance-change", (e) => {
+          $switchableThemes.forEach(($item) => {
+            $item.checked = e.detail === "dark";
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

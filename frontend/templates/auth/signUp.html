@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-800">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../static/dist/css/output.css" />
+    <title>LendMe | Sign up</title>
+  </head>
+  <body class="h-full">
+    <main class="w-full max-w-lg mx-auto p-6">
+      <div
+        class="mt-20 md:mt-20 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700"
+      >
+        <div class="p-4 sm:p-7">
+          <div class="text-center">
+            <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">
+              Create account
+            </h1>
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+              Have an account?
+              <a
+                class="text-blue-600 decoration-2 hover:underline font-medium"
+                href="../examples/html/signup.html"
+              >
+                Sign in here
+              </a>
+            </p>
+            {% with messages = get_flashed_messages() %} {% for message in
+            messages %}
+            <small class="text-red-500">{{message}}</small>
+            {% endfor %} {% endwith %}
+          </div>
+
+          <div class="mt-5">
+            <!-- Form -->
+            <form method="POST" action="{{ url_for('user_auth.register') }}">
+              {{ form.hidden_tag() }}
+              <div class="grid gap-y-4">
+                <div>
+                  {{ form.first_name.label(class="block text-sm mb-2
+                  dark:text-white")}}
+                  <div class="relative">
+                    {{ form.first_name(class="py-3 px-4 block w-full
+                    border-gray-200 rounded-md text-sm focus:border-blue-500
+                    focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700
+                    dark:text-gray-400")}}
+                  </div>
+                  {% if form.first_name.errors %}
+                  <ul class="hidden text-xs text-red-600 mt-2" id="email-error">
+                    {% for error in form.first_name.errors %}
+                    <li><small class="text-red-500">{{ error }}</small></li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                </div>
+                <!-- End Form Group -->
+
+                <div>
+                  {{ form.last_name.label(class="block text-sm mb-2
+                  dark:text-white")}}
+                  <div class="relative">
+                    {{ form.last_name(class="py-3 px-4 block w-full
+                    border-gray-200 rounded-md text-sm focus:border-blue-500
+                    focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700
+                    dark:text-gray-400")}}
+                  </div>
+                  {% if form.last_name.errors %}
+                  <ul class="hidden text-xs text-red-600 mt-2" id="email-error">
+                    {% for error in form.last_name.errors %}
+                    <li><small class="text-red-500">{{ error }}</small></li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                </div>
+                <!-- End Form Group -->
+
+                <!-- Form Group -->
+                <div>
+                  {{ form.email.label(class_='block text-sm mb-2
+                  dark:text-white') }}
+                  <div class="relative">
+                    {{ form.email(class_="py-3 px-4 block w-full border-gray-200
+                    rounded-md text-sm focus:border-blue-500 focus:ring-blue-500
+                    dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400",
+                    placeholder="john@gmail.com",
+                    aria_describedby="email-error") }}
+                  </div>
+                  {% if form.email.errors %}
+                  <ul class="hidden text-xs text-red-600 mt-2" id="email-error">
+                    {% for error in form.email.errors %}
+                    <li><small class="text-red-500">{{ error }}</small></li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                </div>
+                <!-- End Form Group -->
+
+                <!-- Form Group -->
+                <div>
+                  <div class="flex justify-between items-center">
+                    {{ form.password.label(class="block text-sm mb-2
+                    dark:text-white") }}
+                    <a
+                      class="text-sm text-blue-600 decoration-2 hover:underline font-medium"
+                      href="../examples/html/recover-account.html"
+                      >Forgot password?</a
+                    >
+                  </div>
+                  <div class="relative">
+                    {{ form.password(class="py-3 px-4 block w-full
+                    border-gray-200 rounded-md text-sm focus:border-blue-500
+                    focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700
+                    dark:text-gray-400", aria_describedby="password-error",
+                    placeholder="*****")}}
+                  </div>
+                  {% if form.password.errors %}
+                  <ul
+                    class="errors text-xs text-red-600 mt-2"
+                    id="password-error"
+                  >
+                    {% for error in form.password.errors %}
+                    <li><small class="text-red-500">{{ error }}</small></li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                </div>
+                <!-- End Form Group -->
+
+                <!-- Form Group -->
+                <div>
+                  <div class="flex justify-between items-center">
+                    {{ form.confirm_password.label(class="block text-sm mb-2
+                    dark:text-white") }}
+                  </div>
+                  <div class="relative">
+                    {{ form.confirm_password(class="py-3 px-4 block w-full
+                    border-gray-200 rounded-md text-sm focus:border-blue-500
+                    focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700
+                    dark:text-gray-400", placeholder="*****")}}
+                  </div>
+                  {% if form.confirm_password.errors %}
+                  <ul
+                    class="errors text-xs text-red-600 mt-2"
+                    id="password-error"
+                  >
+                    {% for error in form.confirm_password.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                </div>
+                <!-- End Form Group -->
+
+                <button
+                  type="submit"
+                  class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-full border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
+                >
+                  Sign up
+                </button>
+              </div>
+            </form>
+            <!-- End Form -->
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="{{ url_for('serve_preline_js') }}"></script>
+  </body>
+</html>
