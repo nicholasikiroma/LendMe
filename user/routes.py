@@ -20,6 +20,7 @@ blp = Blueprint(
 
 url = "http://127.0.0.1:5003/api/wallets"
 
+
 def create_wallet(user_id):
     """Create wallet when user is created"""
     payload = {"user_id": str(user_id)}
@@ -37,7 +38,7 @@ def create_wallet(user_id):
             if response.status_code == 201:
                 return response.json().get("id")
             retry_count += 1
-            print(f'retry count: {retry_count}')
+            print(f"retry count: {retry_count}")
         return None
 
 
@@ -71,7 +72,7 @@ class CreateUser(MethodView):
         except OperationalError as err:
             db.session.rollback()
             abort(503, message="Service unavailable")
-        
+
         except SQLAlchemyOperationalError:
             db.session.rollback()
             abort(503, message="Service unavailable")
@@ -83,7 +84,6 @@ class CreateUser(MethodView):
         except Exception as err:
             db.session.rollback()
             abort(500, message=str(err))
-
 
         wallet_id = create_wallet(user.id)
         user.wallet_id = wallet_id
@@ -99,12 +99,12 @@ class CreateUser(MethodView):
         except SQLAlchemyOperationalError:
             db.session.rollback()
             abort(503, message="Service unavailable")
-  
+
         except SQLAlchemyError as err:
             db.session.rollback()
             print(str(err))
             abort(500, message="Oops...something went wrong")
-    
+
         except Exception as err:
             db.session.rollback()
             print(str(err))
@@ -124,7 +124,7 @@ class LoginUser(MethodView):
 
         try:
             user = User.query.filter(User.email == email).first()
-        
+
         except OperationalError:
             abort(503, message="Service unavailable")
 
@@ -140,10 +140,9 @@ class LoginUser(MethodView):
             try:
                 db.session.add(user)
                 db.session.commit()
-            
+
             except OperationalError:
                 abort(503, message="Service unavailable")
-            
 
             except SQLAlchemyOperationalError:
                 db.session.rollback()
@@ -171,7 +170,7 @@ class GetUser(MethodView):
         """Retrieve user profile"""
         try:
             user = User.query.get_or_404(user_id)
-        
+
         except NoResultFound:
             abort(404, message="User not found")
 
@@ -180,12 +179,12 @@ class GetUser(MethodView):
 
         except SQLAlchemyOperationalError as err:
             abort(503, message="Service unavailable")
-        
+
         except SQLAlchemyError as err:
             db.session.rollback()
             print(str(err))
             abort(500, message="Something went wrong")
-        
+
         except Exception as err:
             db.session.rollback()
             print(str(err))

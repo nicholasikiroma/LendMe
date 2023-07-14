@@ -40,7 +40,7 @@ class CreateWallet(MethodView):
         except OperationalError:
             db.session.rollback()
             abort(503, message="Service unavailable")
-        
+
         except SQLAlchemyOperationalError:
             db.session.rollback()
             abort(503, message="Service unavailable")
@@ -49,7 +49,7 @@ class CreateWallet(MethodView):
             db.session.rollback()
             print(str(err))
             abort(500, message="Something went wrong")
-        
+
         except Exception as err:
             db.session.rollback()
             print(str(err))
@@ -112,7 +112,7 @@ class FetchWallet(MethodView):
 class CreateTransaction(MethodView):
     """Models CRUD operations on wallets"""
 
-    @blp.arguments(TransactionSchema, location='form')
+    @blp.arguments(TransactionSchema, location="form")
     @blp.response(202, TransactionSchema)
     @jwt_required()
     def post(self, user_data, wallet_id):
@@ -177,7 +177,7 @@ class CreateTransaction(MethodView):
         except OperationalError:
             db.session.rollback()
             abort(503, message="service unavailable")
-        
+
         except SQLAlchemyOperationalError:
             db.session.rollback()
             abort(503, message="service unavailable")
@@ -221,6 +221,8 @@ class FundWallet(MethodView):
     @blp.response(201, FundTransactionSchema)
     def put(self, user_data, wallet_id):
         """Fund wallet"""
+
+        # update database with new amount
         wallet = Wallet.query.get_or_404(wallet_id)
         amount = user_data["amount"]
         wallet.balance += amount
@@ -246,6 +248,7 @@ class FundWallet(MethodView):
             print(str(err))
             abort(500, message="Something went wrong")
 
+        # Create transaction for funding operation
         fund_wallet = FundTransaction(amount=amount, wallet_id=wallet_id)
         try:
             db.session.add(fund_wallet)

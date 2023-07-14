@@ -17,7 +17,7 @@ class LoanClient:
         response = httpx.get(url)
 
         return handle_response(response)
-    
+
     @staticmethod
     def get_user_loans(user_id):
         """Fetch all loans associated with user"""
@@ -25,11 +25,11 @@ class LoanClient:
 
         access_token = "Bearer " + session["access_token"]
         headers = {"Authorization": access_token}
-        
+
         response = httpx.get(url, headers=headers)
 
         return handle_response(response)
-    
+
     @staticmethod
     def get_user_applications(user_id):
         """Fetch all loans associated with user"""
@@ -37,7 +37,7 @@ class LoanClient:
 
         access_token = "Bearer " + session["access_token"]
         headers = {"Authorization": access_token}
-        
+
         response = httpx.get(url, headers=headers)
 
         return handle_response(response)
@@ -107,7 +107,6 @@ class LoanClient:
         response = httpx.get(url, headers=headers)
 
         return handle_response(response)
-
 
     @staticmethod
     def apply_to_loan(loan_id=None, lender_id=None, borrower_id=None):

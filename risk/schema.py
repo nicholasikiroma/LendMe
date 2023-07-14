@@ -26,5 +26,5 @@ class ProfileSchema(Schema):
     employment_status = fields.Str(required=True)
     credit_score = fields.Decimal()
     monthly_income = fields.Decimal(required=True)
-    debt_payments = fields.Decimal(required=True)
+    debt_payments = fields.Decimal()
     is_defaulter = fields.Boolean()

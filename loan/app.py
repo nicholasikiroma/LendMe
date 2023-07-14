@@ -7,7 +7,7 @@ from flask_smorest import Api
 from flask import Flask
 from dotenv import load_dotenv
 
-from models import Loan
+from models import Loan, LoanApplication
 from db import db
 from routes import blp as loan_blueprint
 

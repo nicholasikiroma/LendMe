@@ -1,4 +1,4 @@
-"""Defines schema and validations for RESTFUL API"""
+"""Defines schema and validations for RESTful API"""
 from enum import Enum
 from marshmallow import Schema, fields
 

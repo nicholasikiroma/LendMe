@@ -25,7 +25,7 @@ blp = Blueprint(
 @blp.route("/<uuid:borrower_id>/profile")
 class BorrowerProfile(MethodView):
     """Models Operations on Financial Profile"""
-
+    # fetch profile
     @blp.response(200, ProfileSchema)
     @jwt_required()
     def get(self, borrower_id):
@@ -41,19 +41,20 @@ class BorrowerProfile(MethodView):
 
         except OperationalError:
             abort(503, message="Service unavailable")
-        
+
         except SQLAlchemyOperationalError:
             abort(503, message="Service unavailable")
 
         except SQLAlchemyError as err:
             print(str(err))
             abort(500, message="Something went wrong")
-        
+
         except Exception as err:
             print(str(err))
             abort(500, message="Something went wrong")
 
-    @blp.arguments(ProfileSchema, location='form')
+    # create profile
+    @blp.arguments(ProfileSchema, location="form")
     @blp.response(201, ProfileSchema)
     @jwt_required()
     def post(self, user_data, borrower_id):
@@ -72,7 +73,7 @@ class BorrowerProfile(MethodView):
 
         except IntegrityError:
             abort(400, message="profile exists for user")
-        
+
         except OperationalError:
             db.session.rollback()
             abort(503, message="Service unavailable")
@@ -84,13 +85,14 @@ class BorrowerProfile(MethodView):
             db.session.rollback()
             print(str(err))
             abort(500, message="Something went wrong")
-        
+
         except Exception as err:
             db.session.rollback()
             abort(500, message="Something went wrong")
 
         return profile
 
+    # delete profile
     @jwt_required()
     def delete(self, borrower_id):
         """delete financial profile for borrower"""
@@ -101,7 +103,7 @@ class BorrowerProfile(MethodView):
                 db.session.commit()
             else:
                 abort(404)
-        
+
         except OperationalError:
             db.session.rollback()
             abort(503, message="Service unavailable")
@@ -114,7 +116,6 @@ class BorrowerProfile(MethodView):
             db.session.rollback()
             print(str(err))
             abort(500, message="something went wrong")
-        
 
         except Exception as err:
             print(str(err))
@@ -132,7 +133,9 @@ class AssessmentReport(MethodView):
     def get(self, borrower_id):
         """Fetch risk assessment report for a user"""
         try:
-            report = RiskAssessmentReport.query.filter_by(borrower_id=borrower_id).first()
+            report = RiskAssessmentReport.query.filter_by(
+                borrower_id=borrower_id
+            ).first()
 
         except NoResultFound:
             abort(404, message="Report not found.")
@@ -146,7 +149,6 @@ class AssessmentReport(MethodView):
         except SQLAlchemyError as err:
             print(str(err))
             abort(500, message="something went wrong")
-        
 
         except Exception as err:
             print(str(err))
@@ -170,8 +172,10 @@ class AssessmentReport(MethodView):
             "is_defaulter": finance_profile.is_defaulter,
         }
 
+        # generate risk assessment for user
         assessment = risk_assessment(user_data["loan_amount"], profile)
 
+        # generate assessment report
         report_summary = generate_report_summary(assessment)
 
         report = RiskAssessmentReport()
@@ -199,7 +203,6 @@ class AssessmentReport(MethodView):
             db.session.rollback()
             print(str(err))
             abort(500, message="something went wrong")
-        
 
         except Exception as err:
             print(str(err))

@@ -19,7 +19,7 @@ def create_app(db_url=None):
     load_dotenv()
 
     # base configurations for flask app
-    app.config["JWT_SECRET_KEY"] = os.getenv('JWT_SECRET_KEY')
+    app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
     app.config["PROPAGATE_EXCEPTIONS"] = True
     app.config["API_TITLE"] = "USER REST API"
     app.config["API_VERSION"] = "v1"

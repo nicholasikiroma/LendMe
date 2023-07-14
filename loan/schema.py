@@ -2,10 +2,10 @@
 from enum import Enum
 from marshmallow import Schema, fields
 
+
 class LoanStatus(Enum):
     OPEN = "open"
     CLOSED = "closed"
-
 
 
 class BorrowerApplicationsSchema(Schema):

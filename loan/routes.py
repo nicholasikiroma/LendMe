@@ -8,7 +8,13 @@ from sqlalchemy.exc import OperationalError as SQLAlchemyOperationalError
 from psycopg2 import OperationalError
 
 
-from schema import LoanOperationsSchema, LoanSchema, LoanApplicationSchema, StartEndLoan,RepaymentSchema
+from schema import (
+    LoanOperationsSchema,
+    LoanSchema,
+    LoanApplicationSchema,
+    StartEndLoan,
+    RepaymentSchema,
+)
 from utils.interest_calculator import loan_cal
 from models import Loan, LoanApplication
 from db import db
@@ -28,19 +34,19 @@ class Loans(MethodView):
         """Fetch all loans"""
         try:
             return Loan.query.order_by(Loan.created_at.desc()).all()
-        
+
         except OperationalError:
             abort(503, message="service unavailable")
 
         except SQLAlchemyOperationalError:
             abort(503, message="service unavailable")
-        
+
         except NoResultFound:
             abort(404, message="loans not found")
 
         except SQLAlchemyError as err:
             abort(500, message=str(err))
-        
+
         except Exception as err:
             abort(500, message="Something went wrong.")
 
@@ -190,11 +196,11 @@ class LoanApplications(MethodView):
         try:
             db.session.add(application)
             db.session.commit()
-        
+
         except OperationalError:
             db.session.rollback()
             abort(503, message="service unavailable")
-        
+
         except SQLAlchemyOperationalError as err:
             db.session.rollback()
             abort(503, message="service unavailable")
@@ -240,7 +246,7 @@ class LoanApplications(MethodView):
 
 @blp.route("/<uuid:loan_id>/start-date")
 class StartDate(MethodView):
-    @blp.arguments(StartEndLoan, location='json')
+    @blp.arguments(StartEndLoan, location="json")
     @blp.response(200, LoanSchema)
     @jwt_required()
     def put(self, user_data, loan_id):
@@ -274,7 +280,7 @@ class StartDate(MethodView):
 
 @blp.route("/<uuid:loan_id>/end-date")
 class EndDate(MethodView):
-    @blp.arguments(StartEndLoan, location='json')
+    @blp.arguments(StartEndLoan, location="json")
     @blp.response(200, LoanSchema)
     @jwt_required()
     def put(self, user_data, loan_id):
@@ -324,10 +330,10 @@ class Apply(MethodView):
 
         except NoResultFound:
             abort(404, message="Loan not found.")
-        
 
         application = LoanApplication.query.filter_by(
-            loan_id=loan_id, borrower_id=borrower_id).one_or_none()
+            loan_id=loan_id, borrower_id=borrower_id
+        ).one_or_none()
 
         if application:
             abort(401, message="Already applied to this loan.")
@@ -413,7 +419,7 @@ class UserLoans(MethodView):
 
         except OperationalError:
             abort(503, message="Service temporarily unavailable")
-        
+
         except SQLAlchemyOperationalError as err:
             db.session.rollback()
             abort(503, message="service unavailable")

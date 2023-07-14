@@ -5,7 +5,8 @@ from flask import session
 from . import WALLET_API_URL
 from .error_handler import handle_response
 
-TIMEOUT=5
+TIMEOUT = 5
+
 
 class WalletClient:
     """client for interfacing with Wallet service"""
@@ -48,7 +49,7 @@ class WalletClient:
     @staticmethod
     def create_transaction(form):
         """Initiate a transaction"""
-        wallet_id = session['current_user']['wallet_id']
+        wallet_id = session["current_user"]["wallet_id"]
         payload = {
             "sender_id": form.sender_id.data,
             "receiver_id": form.receiver_id.data,
