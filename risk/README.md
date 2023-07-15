@@ -39,3 +39,7 @@ Run Flask app:
 ```bash
 flask run --debug --port=5004
 ```
+
+## Swagger Docs
+
+<http://127.0.0.1:5004/api/docs/swagger-ui>
