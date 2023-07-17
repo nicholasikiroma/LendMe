@@ -14,9 +14,27 @@ class LoanClient:
         """Fetch all loans"""
         url = urljoin(LOAN_API_URL, "/api/loans/")
 
-        response = httpx.get(url)
+        try:
+            response = httpx.get(url)
+            return handle_response(response)
 
-        return handle_response(response)
+        except httpx.ConnectError as err:
+            print(str(err))
+            response = {"error": "Connection error",
+                        "status_code": 503}
+            return response
+        
+        except httpx.ConnectTimeout as err:
+            print(str(err))
+            response = {"error": "Server took too long to respond",
+                        "status_code": 502}
+            return response
+        
+        except httpx.HTTPError as err:
+            print(str(err))
+            response = {"error": "Something went wrong",
+                        "status_code": 500}
+            return response
 
     @staticmethod
     def get_user_loans(user_id):
@@ -26,9 +44,27 @@ class LoanClient:
         access_token = "Bearer " + session["access_token"]
         headers = {"Authorization": access_token}
 
-        response = httpx.get(url, headers=headers)
+        try:
+            response = httpx.get(url, headers=headers)
+            return handle_response(response)
 
-        return handle_response(response)
+        except httpx.ConnectError as err:
+            print(str(err))
+            response = {"error": "Connection error",
+                        "status_code": 503}
+            return response
+        
+        except httpx.ConnectTimeout as err:
+            print(str(err))
+            response = {"error": "Server took too long to respond",
+                        "status_code": 502}
+            return response
+        
+        except httpx.HTTPError as err:
+            print(str(err))
+            response = {"error": "Something went wrong",
+                        "status_code": 500}
+            return response
 
     @staticmethod
     def get_user_applications(user_id):
@@ -38,9 +74,27 @@ class LoanClient:
         access_token = "Bearer " + session["access_token"]
         headers = {"Authorization": access_token}
 
-        response = httpx.get(url, headers=headers)
+        try:
+            response = httpx.get(url, headers=headers)
+            return handle_response(response)
 
-        return handle_response(response)
+        except httpx.ConnectError as err:
+            print(str(err))
+            response = {"error": "Connection error",
+                        "status_code": 503}
+            return response
+        
+        except httpx.ConnectTimeout as err:
+            print(str(err))
+            response = {"error": "Server took too long to respond",
+                        "status_code": 502}
+            return response
+        
+        except httpx.HTTPError as err:
+            print(str(err))
+            response = {"error": "Something went wrong",
+                        "status_code": 500}
+            return response
 
     @staticmethod
     def create_loan(form):
@@ -56,9 +110,27 @@ class LoanClient:
 
         url = urljoin(LOAN_API_URL, "/api/loans/")
 
-        response = httpx.post(url, headers=headers, data=payload)
+        try:
+            response = httpx.post(url, headers=headers, data=payload)
+            return handle_response(response)
 
-        return handle_response(response)
+        except httpx.ConnectError as err:
+            print(str(err))
+            response = {"error": "Connection error",
+                        "status_code": 503}
+            return response
+        
+        except httpx.ConnectTimeout as err:
+            print(str(err))
+            response = {"error": "Server took too long to respond",
+                        "status_code": 502}
+            return response
+        
+        except httpx.HTTPError as err:
+            print(str(err))
+            response = {"error": "Something went wrong",
+                        "status_code": 500}
+            return response
 
     @staticmethod
     def fetch_loan(loan_id):
@@ -68,9 +140,27 @@ class LoanClient:
 
         url = urljoin(LOAN_API_URL, f"/api/loans/{loan_id}")
 
-        response = httpx.get(url, headers=headers)
+        try:
+            response = httpx.get(url, headers=headers)
+            return handle_response(response)
 
-        return handle_response(response)
+        except httpx.ConnectError as err:
+            print(str(err))
+            response = {"error": "Connection error",
+                        "status_code": 503}
+            return response
+        
+        except httpx.ConnectTimeout as err:
+            print(str(err))
+            response = {"error": "Server took too long to respond",
+                        "status_code": 502}
+            return response
+        
+        except httpx.HTTPError as err:
+            print(str(err))
+            response = {"error": "Something went wrong",
+                        "status_code": 500}
+            return response
 
     @staticmethod
     def delete_loan(loan_id):
