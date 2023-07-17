@@ -13,6 +13,7 @@ from schema import ReportSchema, ProfileSchema
 from utils.risk_assessment import risk_assessment, generate_report_summary
 from db import db
 from models import FinancialProfile, RiskAssessmentReport
+from flask import jsonify
 
 blp = Blueprint(
     "Risk Assessment",
@@ -25,6 +26,7 @@ blp = Blueprint(
 @blp.route("/<uuid:borrower_id>/profile")
 class BorrowerProfile(MethodView):
     """Models Operations on Financial Profile"""
+
     # fetch profile
     @blp.response(200, ProfileSchema)
     @jwt_required()
@@ -34,10 +36,13 @@ class BorrowerProfile(MethodView):
             profile = FinancialProfile.query.filter_by(
                 borrower_id=borrower_id
             ).one_or_none()
-            if profile:
+
+            if profile is not None:
                 return profile
-            else:
-                abort(404, message="Profile not found")
+
+            profile = jsonify(message="Profile not found")
+            profile.status_code = 404
+            return profile
 
         except OperationalError:
             abort(503, message="Service unavailable")

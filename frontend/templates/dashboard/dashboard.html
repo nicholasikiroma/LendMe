@@ -61,11 +61,20 @@
           </div>
 
           <div class="text-center">
+            
+            {% if wallet.balance %}
             <h3
               class="text-3xl sm:text-4xl lg:text-5xl font-semibold text-white dark:text-gray-200"
             >
               {{ wallet.balance }}
             </h3>
+            {% else %}
+            <h3
+            class="text-3xl sm:text-4xl lg:text-5xl font-semibold text-white dark:text-gray-200"
+          >
+            --
+          </h3>
+            {% endif %}
           </div>
 
 
@@ -87,11 +96,20 @@
           </div>
 
           <div class="text-center">
+            
+            {% if investments %}  
             <h3
               class="text-3xl sm:text-4xl lg:text-5xl font-semibold text-white dark:text-gray-200"
             >
               {{ investments }}
             </h3>
+            {% else %}
+            <h3
+            class="text-3xl sm:text-4xl lg:text-5xl font-semibold text-white dark:text-gray-200"
+          >
+            --
+          </h3>
+            {% endif %}
           </div>
         </div>
         <!-- End Card -->
@@ -111,11 +129,20 @@
           </div>
 
           <div class="text-center">
+            
+            {% if liabilities %}  
             <h3
               class="text-3xl sm:text-4xl lg:text-5xl font-semibold text-white dark:text-gray-200"
             >
               {{ liabilities }}
             </h3>
+            {% else %}
+            <h3
+            class="text-3xl sm:text-4xl lg:text-5xl font-semibold text-white dark:text-gray-200"
+          >
+            --
+          </h3>
+            {% endif %}
           </div>
         </div>
         <!-- End Card -->

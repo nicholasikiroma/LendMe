@@ -23,13 +23,16 @@ def dashboard():
     current_user = session["current_user"]
     wallet = WalletClient.get_wallet(current_user["wallet_id"])
 
-    user_loans = LoanClient.get_user_loans(current_user['id'])
-    user_applications = LoanClient.get_user_applications(current_user['id'])
+    user_loans = LoanClient.get_user_loans(current_user["id"])
+    user_applications = LoanClient.get_user_applications(current_user["id"])
+
+    investments = None
+    liabilities = None
 
     if isinstance(user_loans, dict):
         loan_error = user_loans["error"]
         flash(loan_error)
-    
+
     else:
         investments = len(user_loans)
 
@@ -40,7 +43,13 @@ def dashboard():
     else:
         liabilities = len(user_applications)
 
-    return render_template("dashboard.html", user=current_user, wallet=wallet, investments=investments, liabilities=liabilities)
+    return render_template(
+        "dashboard.html",
+        user=current_user,
+        wallet=wallet,
+        investments=investments,
+        liabilities=liabilities,
+    )
 
 
 # start of loan operations
@@ -127,18 +136,17 @@ def submit_apply():
         application = LoanClient.apply_to_loan(
             lender_id=lender_id, borrower_id=borrower_id, loan_id=loan_id
         )
-        success_msg = application.get('message', None)
+        success_msg = application.get("message", None)
         if success_msg:
             flash(success_msg)
-            return redirect(url_for('dashboard.my_loans'))
-        
+            return redirect(url_for("dashboard.my_loans"))
+
         else:
-            flash(application['error'])
-            return redirect(url_for('dashboard.discover_loans'))
+            flash(application["error"])
+            return redirect(url_for("dashboard.discover_loans"))
 
     elif risk_profile["status_code"] == 404:
         flash("Kindly update your financial profile to apply.")
-
 
     else:
         flash(risk_profile["error"])
@@ -159,7 +167,7 @@ def view_applications(loan_id):
                 return render_template(
                     "applications.html", applications=response["applications"]
                 )
-            return render_template('applications.html', applications=None)
+            return render_template("applications.html", applications=None)
         else:
             flash(response["error"])
             return render_template("applications.html", applications=None)
@@ -198,7 +206,7 @@ def disburse_loan(loan_id):
             "receiver_id": start_loan["borrower_id"],
         }
         session["payment_details"] = payment_details
-        return redirect(url_for('dashboard.transfer_funds'))
+        return redirect(url_for("dashboard.transfer_funds"))
     else:
         flash(start_loan["error"])
         return redirect(url_for("dashboard.my_loans"))
@@ -217,9 +225,9 @@ def repay_details(loan_id):
         loan = repayment_details.get("loan_id", None)
         if loan:
             payment_details = {
-                "sender_id": repayment_details['borrower_id'],
-                "receiver_id": repayment_details['lender_id'],
-                "amount_due": repayment_details['amount_due'] 
+                "sender_id": repayment_details["borrower_id"],
+                "receiver_id": repayment_details["lender_id"],
+                "amount_due": repayment_details["amount_due"],
             }
 
             session["payment_details"] = payment_details
@@ -381,7 +389,11 @@ def transfer_funds():
         receiver_id = transaction_details["receiver_id"]
 
         form = TransactionForm(
-            data={"sender_id": sender_id, "receiver_id": receiver_id, "amount": float(amount)}
+            data={
+                "sender_id": sender_id,
+                "receiver_id": receiver_id,
+                "amount": float(amount),
+            }
         )
 
         if request.method == "POST" and form.validate_on_submit():

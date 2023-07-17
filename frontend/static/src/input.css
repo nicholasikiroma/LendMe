@@ -3,10 +3,11 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: "Gotham Book";
-    src: url(../dist/public/GothamBook.ttf);
+    font-family: "Rubik";
+    src: url(../public/Rubik-Regular.ttf);
 }
 
+
 *{
-    font-family: "Gotham Book", sans-serif;
+    font-family: "Rubik", sans-serif;
 }
