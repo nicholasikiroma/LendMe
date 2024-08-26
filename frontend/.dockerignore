@@ -1,0 +1,5 @@
+
+client_env
+package*.json
+tailwind.config.js
+__pycache__

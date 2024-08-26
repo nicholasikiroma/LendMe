@@ -1,3 +1,4 @@
+"""Module handles user creation and authentication"""
 import functools
 from flask import Blueprint, redirect, render_template, flash, request, session, url_for
 from api.user_service import UserClient
@@ -10,11 +11,12 @@ blp = Blueprint(
 
 
 def login_required(view):
+    """Handler for protected routes"""
     @functools.wraps(view)
     def wrapped_view(**kwargs):
-        user = session.get('current_user', None)
+        user = session.get("current_user", None)
         if user is None:
-            return redirect(url_for('user_auth.login'))
+            return redirect(url_for("user_auth.login"))
 
         return view(**kwargs)
 
@@ -48,7 +50,7 @@ def login():
             session["access_token"] = access_token
 
             current_user = UserClient.get_current_user()
-            user_id = current_user.get('id', None)
+            user_id = current_user.get("id", None)
             if user_id:
                 session["current_user"] = current_user
                 return redirect(url_for("dashboard.dashboard"))
@@ -64,5 +66,6 @@ def login():
 
 @blp.route("/logout")
 def logout():
+    """Clear user from session"""
     session.clear()
     return redirect(url_for("index.index"))

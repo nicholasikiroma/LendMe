@@ -18,28 +18,22 @@ blp = Blueprint(
                Operations on users",
 )
 
-url = "http://127.0.0.1:5003/api/wallets"
+wallet_service_url = "http://wallet-service:5003/api/wallets"
 
 
-def create_wallet(user_id):
-    """Create wallet when user is created"""
+# Helper function for wallet creation
+def create_wallet(user_id, retries=3, delay=1):
+    """Create wallet for a user with retry logic."""
     payload = {"user_id": str(user_id)}
-    response = requests.post(url, json=payload)
-
-    if response.status_code == 201:
-        return response.json().get("id")
-
-    elif response.status_code == 503:
-        retry_count = 0
-        max_retries = 3
-        while retry_count < max_retries:
-            sleep(1)  # Wait for 1 second before retrying
-            response = requests.post(url, json=payload)
-            if response.status_code == 201:
-                return response.json().get("id")
-            retry_count += 1
-            print(f"retry count: {retry_count}")
-        return None
+    for attempt in range(retries):
+        response = requests.post(wallet_service_url, json=payload)
+        if response.status_code == 201:
+            return response.json().get("id")
+        if response.status_code == 503:
+            sleep(delay)
+        else:
+            break
+    return None
 
 
 @blp.route("/register")
@@ -47,68 +41,38 @@ class CreateUser(MethodView):
     @blp.arguments(UserSchema, location="form")
     @blp.response(201, UserSchema)
     def post(self, user_data):
-        """Create a new user"""
-        first_name = user_data["first_name"]
-        last_name = user_data["last_name"]
-        password = user_data["password"]
-        email = user_data["email"]
-
-        hashed_password = pbkdf2_sha256.hash(password)
+        """Create a new user and a wallet for the user."""
+        user = User(
+            first_name=user_data["first_name"],
+            last_name=user_data["last_name"],
+            password=pbkdf2_sha256.hash(user_data["password"]),
+            email=user_data["email"],
+        )
 
         try:
-            user = User(
-                first_name=first_name,
-                last_name=last_name,
-                password=hashed_password,
-                email=email,
-            )
             db.session.add(user)
             db.session.commit()
-
         except IntegrityError:
             db.session.rollback()
-            abort(400, message="User already exists")
-
-        except OperationalError as err:
+            abort(400, message="User already exists.")
+        except (SQLAlchemyError, OperationalError) as err:
             db.session.rollback()
-            abort(503, message="Service unavailable")
+            abort(
+                503 if isinstance(err, OperationalError) else 500,
+                message="Service unavailable.",
+            )
 
-        except SQLAlchemyOperationalError:
-            db.session.rollback()
-            abort(503, message="Service unavailable")
-
-        except SQLAlchemyError as err:
-            db.session.rollback()
-            abort(500, message=str(err))
-
-        except Exception as err:
-            db.session.rollback()
-            abort(500, message=str(err))
-
-        wallet_id = create_wallet(user.id)
-        user.wallet_id = wallet_id
-
+        # Create wallet after user is created
+        user.wallet_id = create_wallet(user.id)
         try:
             db.session.add(user)
             db.session.commit()
-
-        except OperationalError as err:
+        except (SQLAlchemyError, OperationalError) as err:
             db.session.rollback()
-            abort(503, message="Service unavailable")
-
-        except SQLAlchemyOperationalError:
-            db.session.rollback()
-            abort(503, message="Service unavailable")
-
-        except SQLAlchemyError as err:
-            db.session.rollback()
-            print(str(err))
-            abort(500, message="Oops...something went wrong")
-
-        except Exception as err:
-            db.session.rollback()
-            print(str(err))
-            abort(500, message="Error creating wallet")
+            abort(
+                503 if isinstance(err, OperationalError) else 500,
+                message="Error creating wallet.",
+            )
 
         return user
 
@@ -118,48 +82,23 @@ class LoginUser(MethodView):
     @blp.arguments(LoginSchema, location="form")
     @blp.response(200, LoginSchema)
     def post(self, user_data):
-        """Authenticate and generate token for user"""
-        email = user_data["email"]
-        password = user_data["password"]
-
+        """Authenticate a user and return a token."""
         try:
-            user = User.query.filter(User.email == email).first()
+            user = User.query.filter_by(email=user_data["email"]).first()
+            if not user or not pbkdf2_sha256.verify(
+                user_data["password"], user.password
+            ):
+                abort(401, message="Invalid email or password.")
 
-        except OperationalError:
-            abort(503, message="Service unavailable")
-
-        except SQLAlchemyOperationalError:
-            abort(503, message="Service unavailable")
-
-        if not user:
-            abort(404, message="User not found.")
-
-        if user and pbkdf2_sha256.verify(password, user.password):
             user.update_access_token()
-
-            try:
-                db.session.add(user)
-                db.session.commit()
-
-            except OperationalError:
-                abort(503, message="Service unavailable")
-
-            except SQLAlchemyOperationalError:
-                db.session.rollback()
-                abort(503, message="Service unavailable")
-
-            except SQLAlchemyError as err:
-                db.session.rollback()
-                abort(500, message=str(err))
-
-            except Exception as err:
-                db.session.rollback()
-                print(str(err))
-                abort(500, message="Error signing in")
-
+            db.session.commit()
             return user
-
-        abort(401, message="Invalid email or password")
+        except (SQLAlchemyError, OperationalError) as err:
+            db.session.rollback()
+            abort(
+                503 if isinstance(err, OperationalError) else 500,
+                message="Service unavailable.",
+            )
 
 
 @blp.route("/<uuid:user_id>/profile")
@@ -167,30 +106,15 @@ class GetUser(MethodView):
     @blp.response(200, UserSchema)
     @jwt_required()
     def get(self, user_id):
-        """Retrieve user profile"""
+        """Retrieve user profile."""
         try:
             user = User.query.get_or_404(user_id)
-
-        except NoResultFound:
-            abort(404, message="User not found")
-
-        except OperationalError as err:
-            abort(503, message="Service unavailable")
-
-        except SQLAlchemyOperationalError as err:
-            abort(503, message="Service unavailable")
-
-        except SQLAlchemyError as err:
-            db.session.rollback()
-            print(str(err))
-            abort(500, message="Something went wrong")
-
-        except Exception as err:
-            db.session.rollback()
-            print(str(err))
-            abort(500, message="Something went wrong")
-
-        return user
+            return user
+        except (SQLAlchemyError, OperationalError) as err:
+            abort(
+                503 if isinstance(err, OperationalError) else 500,
+                message="Something went wrong.",
+            )
 
 
 @blp.route("/current-user")
@@ -198,9 +122,8 @@ class GetCurrentUser(MethodView):
     @blp.response(200, UserSchema)
     @jwt_required()
     def get(self):
-        """Fetch the current user"""
+        """Fetch the current authenticated user."""
         current_user = get_current_user()
-        if current_user:
-            return current_user
-        else:
-            abort(404, message="user not found")
+        if not current_user:
+            abort(404, message="User not found.")
+        return current_user

@@ -1,4 +1,5 @@
 """Module handles communication between Frontend interface and User service"""
+
 from urllib.parse import urljoin
 from . import USER_API_URL
 from flask import session

@@ -1,9 +1,12 @@
 from flask_jwt_extended import jwt_required
 from flask_smorest import Blueprint, abort
 from flask.views import MethodView
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError, NoResultFound
+from sqlalchemy.exc import (
+    SQLAlchemyError,
+    OperationalError as SQLAlchemyOperationalError,
+)
 from psycopg2 import OperationalError
-from sqlalchemy.exc import OperationalError as SQLAlchemyOperationalError
+from functools import wraps
 
 from schema import WalletSchema, TransactionSchema, FundTransactionSchema
 from models import Transactions, Wallet, FundTransaction
@@ -12,9 +15,30 @@ from db import db
 blp = Blueprint(
     "Payments",
     "payments",
-    description="\
-               Operations on Payment Management Service",
+    description="Operations on Payment Management Service",
 )
+
+
+def handle_exceptions(func):
+    """Decorator to handle exceptions for database operations."""
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except SQLAlchemyOperationalError:
+            db.session.rollback()
+            abort(503, message="Service unavailable.")
+        except SQLAlchemyError as err:
+            db.session.rollback()
+            print(f"Error: {str(err)}")
+            abort(500, message="Database error occurred.")
+        except Exception as err:
+            db.session.rollback()
+            print(f"Error: {str(err)}")
+            abort(500, message="An unknown error occurred.")
+
+    return wrapper
 
 
 @blp.route("/")
@@ -23,38 +47,12 @@ class CreateWallet(MethodView):
 
     @blp.arguments(WalletSchema)
     @blp.response(201, WalletSchema)
+    @handle_exceptions
     def post(self, user_data):
         """Create wallet"""
-        wallet = Wallet()
-
-        wallet.user_id = user_data["user_id"]
-
-        try:
-            db.session.add(wallet)
-            db.session.commit()
-
-        except IntegrityError:
-            db.session.rollback()
-            abort(403, message="wallet exits for user")
-
-        except OperationalError:
-            db.session.rollback()
-            abort(503, message="Service unavailable")
-
-        except SQLAlchemyOperationalError:
-            db.session.rollback()
-            abort(503, message="Service unavailable")
-
-        except SQLAlchemyError as err:
-            db.session.rollback()
-            print(str(err))
-            abort(500, message="Something went wrong")
-
-        except Exception as err:
-            db.session.rollback()
-            print(str(err))
-            abort(500, message="Something went wrong")
-
+        wallet = Wallet(user_id=user_data["user_id"])
+        db.session.add(wallet)
+        db.session.commit()
         return wallet
 
 
@@ -64,47 +62,20 @@ class FetchWallet(MethodView):
 
     @blp.response(200, WalletSchema)
     @jwt_required()
+    @handle_exceptions
     def get(self, wallet_id):
-        """fetch wallet"""
-        try:
-            wallet = Wallet.query.get_or_404(wallet_id)
-
-        except NoResultFound:
-            abort(404, message="wallet not found")
-
-        except OperationalError:
-            abort(503, "service unavailable")
-
-        except SQLAlchemyOperationalError:
-            abort(503, "service unavailable")
-
-        except SQLAlchemyError as err:
-            print(str(err))
-            abort(500, message="Something went wrong")
-
-        except Exception as err:
-            print(str(err))
-            abort(500, message="Something went wrong")
-
+        """Fetch wallet"""
+        wallet = Wallet.query.get_or_404(wallet_id)
         return wallet
 
     @blp.response(202, WalletSchema)
     @jwt_required()
+    @handle_exceptions
     def delete(self, wallet_id):
         """Delete wallet"""
         wallet = Wallet.query.get_or_404(wallet_id)
-        try:
-            db.session.delete(wallet)
-            db.session.commit()
-
-        except OperationalError:
-            db.session.rollback()
-            abort(503, message="service unavailable")
-
-        except SQLAlchemyError as err:
-            db.session.rollback()
-            abort(500, message=f"{err}")
-
+        db.session.delete(wallet)
+        db.session.commit()
         return wallet
 
 
@@ -115,6 +86,7 @@ class CreateTransaction(MethodView):
     @blp.arguments(TransactionSchema, location="form")
     @blp.response(202, TransactionSchema)
     @jwt_required()
+    @handle_exceptions
     def post(self, user_data, wallet_id):
         """Create a transaction"""
         sender_wallet = Wallet.query.get_or_404(wallet_id)
@@ -124,74 +96,42 @@ class CreateTransaction(MethodView):
         narration = user_data["narration"]
 
         if sender_wallet.user_id != sender_id:
-            abort(400, message="wallet is not yours.")
+            abort(400, message="This wallet is not yours.")
 
-        # Validate sender and receiver existence
         receiver_wallet = Wallet.query.filter_by(user_id=receiver_id).first()
         if not receiver_wallet:
-            abort(404, message="receiver wallet not found")
+            abort(404, message="Receiver wallet not found.")
 
-        # Validate sufficient funds in the sender's wallet
         if sender_wallet.balance < txn_amount:
-            abort(400, message="insufficient funds")
+            abort(400, message="Insufficient funds.")
 
-        try:
-            with db.session.begin_nested():
-                # Debit the sender's wallet
-                sender_wallet.balance -= txn_amount
+        with db.session.begin_nested():
+            sender_wallet.balance -= txn_amount
+            receiver_wallet.balance += txn_amount
 
-                # Credit the receiver's wallet
-                receiver_wallet.balance += txn_amount
+            sender_transaction = Transactions(
+                sender_id=sender_id,
+                receiver_id=receiver_id,
+                wallet_id=wallet_id,
+                amount=txn_amount,
+                narration=narration,
+                transaction_type="DEBIT",
+                status="SUCCESSFUL",
+            )
+            receiver_transaction = Transactions(
+                sender_id=sender_id,
+                receiver_id=receiver_id,
+                wallet_id=receiver_wallet.id,
+                amount=txn_amount,
+                narration=narration,
+                transaction_type="CREDIT",
+                status="SUCCESSFUL",
+            )
 
-                # Create sender transaction
-                sender_transaction = Transactions(
-                    sender_id=sender_id,
-                    receiver_id=receiver_id,
-                    wallet_id=wallet_id,
-                    amount=txn_amount,
-                    narration=narration,
-                    transaction_type="DEBIT",
-                    status="SUCCESSFUL",
-                )
-                db.session.add(sender_transaction)
+            db.session.add(sender_transaction)
+            db.session.add(receiver_transaction)
 
-                # Create receiver transaction
-                receiver_transaction = Transactions(
-                    sender_id=sender_id,
-                    receiver_id=receiver_id,
-                    wallet_id=receiver_wallet.id,
-                    amount=txn_amount,
-                    narration=narration,
-                    transaction_type="CREDIT",
-                    status="SUCCESSFUL",
-                )
-                db.session.add(receiver_transaction)
-
-            # Commit the outermost transaction, which includes both debit and credit operations
-            db.session.commit()
-
-        except IntegrityError as err:
-            db.session.rollback()
-            abort(403, message="transaction exists")
-
-        except OperationalError:
-            db.session.rollback()
-            abort(503, message="service unavailable")
-
-        except SQLAlchemyOperationalError:
-            db.session.rollback()
-            abort(503, message="service unavailable")
-
-        except SQLAlchemyError as err:
-            db.session.rollback()
-            print(str(err))
-            abort(500, message="service unavailable")
-
-        except Exception as err:
-            db.session.rollback()
-            print(str(err))
-            abort(500, message="unknown error occured")
-
+        db.session.commit()
         return sender_transaction
 
 
@@ -201,10 +141,10 @@ class FetchTransactions(MethodView):
 
     @blp.response(200, TransactionSchema)
     @jwt_required()
+    @handle_exceptions
     def get(self, wallet_id, transaction_id):
         """Fetch transaction details"""
         wallet = Wallet.query.get_or_404(wallet_id)
-
         transaction = wallet.transactions.filter_by(id=transaction_id).first()
 
         if transaction:
@@ -219,57 +159,19 @@ class FundWallet(MethodView):
 
     @blp.arguments(FundTransactionSchema)
     @blp.response(201, FundTransactionSchema)
+    @handle_exceptions
     def put(self, user_data, wallet_id):
         """Fund wallet"""
-
-        # update database with new amount
         wallet = Wallet.query.get_or_404(wallet_id)
         amount = user_data["amount"]
         wallet.balance += amount
-        try:
-            db.session.add(wallet)
-            db.session.commit()
 
-        except OperationalError:
-            db.session.rollback()
-            abort(503, message="Service unavailable.")
+        db.session.add(wallet)
+        db.session.commit()
 
-        except SQLAlchemyOperationalError as err:
-            db.session.rollback()
-            abort(503, message="service unavailable")
-
-        except SQLAlchemyError as err:
-            db.session.rollback()
-            print(str(err))
-            abort(500, message="Something went wrong")
-
-        except Exception as err:
-            db.session.rollback()
-            print(str(err))
-            abort(500, message="Something went wrong")
-
-        # Create transaction for funding operation
         fund_wallet = FundTransaction(amount=amount, wallet_id=wallet_id)
-        try:
-            db.session.add(fund_wallet)
-            db.session.commit()
 
-        except OperationalError:
-            db.session.rollback()
-            abort(503, message="service unavailable")
-
-        except SQLAlchemyOperationalError as err:
-            db.session.rollback()
-            abort(503, message="service unavailable")
-
-        except SQLAlchemyError as err:
-            db.session.rollback()
-            print(str(err))
-            abort(500, message="Something went wrong")
-
-        except Exception as err:
-            db.session.rollback()
-            print(str(err))
-            abort(500, message="Something went wrong")
+        db.session.add(fund_wallet)
+        db.session.commit()
 
         return fund_wallet

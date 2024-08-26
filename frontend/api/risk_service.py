@@ -1,4 +1,5 @@
 """Module handles communication between Frontend interface and Risk service"""
+
 from urllib.parse import urljoin
 import httpx
 from flask import session

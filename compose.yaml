@@ -1,0 +1,56 @@
+name: <your project name>
+services:
+    client-service:
+        build: ./frontend
+        env_file:
+            - ./frontend/.env
+        container_name: client-service
+        networks:
+            - lendme-network
+        ports:
+            - 5000:5000
+        image: client-service:0
+    user-service:
+        build: ./user
+        env_file:
+            - ./user/.env
+        container_name: user-service
+        networks:
+            - lendme-network
+        ports:
+            - 5001:5001
+        image: user-service:0
+    wallet-service:
+        build: ./payment
+        env_file:
+            - ./payment/.env
+        container_name: wallet-service
+        networks:
+            - lendme-network
+        ports:
+            - 5003:5003
+        image: wallet-service:0
+    loan-service:
+        build: ./loan
+        env_file:
+            - ./loan/.env
+        container_name: loan-service
+        networks:
+            - lendme-network
+        ports:
+            - 5002:5002
+        image: loan-service:0
+    risk-service:
+        build: ./risk
+        env_file:
+            - ./risk/.env
+        container_name: risk-service
+        networks:
+            - lendme-network
+        ports:
+            - 5004:5004
+        image: risk-service:0
+networks:
+    lendme-network:
+        external: true
+        name: lendme-network

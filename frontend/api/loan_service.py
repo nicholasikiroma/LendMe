@@ -1,4 +1,5 @@
 """Module handles communication between Frontend interface and Loan service"""
+
 from . import LOAN_API_URL
 from flask import session
 import httpx
@@ -20,20 +21,17 @@ class LoanClient:
 
         except httpx.ConnectError as err:
             print(str(err))
-            response = {"error": "Connection error",
-                        "status_code": 503}
+            response = {"error": "Connection error", "status_code": 503}
             return response
-        
+
         except httpx.ConnectTimeout as err:
             print(str(err))
-            response = {"error": "Server took too long to respond",
-                        "status_code": 502}
+            response = {"error": "Server took too long to respond", "status_code": 502}
             return response
-        
+
         except httpx.HTTPError as err:
             print(str(err))
-            response = {"error": "Something went wrong",
-                        "status_code": 500}
+            response = {"error": "Something went wrong", "status_code": 500}
             return response
 
     @staticmethod
@@ -50,20 +48,17 @@ class LoanClient:
 
         except httpx.ConnectError as err:
             print(str(err))
-            response = {"error": "Connection error",
-                        "status_code": 503}
+            response = {"error": "Connection error", "status_code": 503}
             return response
-        
+
         except httpx.ConnectTimeout as err:
             print(str(err))
-            response = {"error": "Server took too long to respond",
-                        "status_code": 502}
+            response = {"error": "Server took too long to respond", "status_code": 502}
             return response
-        
+
         except httpx.HTTPError as err:
             print(str(err))
-            response = {"error": "Something went wrong",
-                        "status_code": 500}
+            response = {"error": "Something went wrong", "status_code": 500}
             return response
 
     @staticmethod
@@ -80,20 +75,17 @@ class LoanClient:
 
         except httpx.ConnectError as err:
             print(str(err))
-            response = {"error": "Connection error",
-                        "status_code": 503}
+            response = {"error": "Connection error", "status_code": 503}
             return response
-        
+
         except httpx.ConnectTimeout as err:
             print(str(err))
-            response = {"error": "Server took too long to respond",
-                        "status_code": 502}
+            response = {"error": "Server took too long to respond", "status_code": 502}
             return response
-        
+
         except httpx.HTTPError as err:
             print(str(err))
-            response = {"error": "Something went wrong",
-                        "status_code": 500}
+            response = {"error": "Something went wrong", "status_code": 500}
             return response
 
     @staticmethod
@@ -116,20 +108,17 @@ class LoanClient:
 
         except httpx.ConnectError as err:
             print(str(err))
-            response = {"error": "Connection error",
-                        "status_code": 503}
+            response = {"error": "Connection error", "status_code": 503}
             return response
-        
+
         except httpx.ConnectTimeout as err:
             print(str(err))
-            response = {"error": "Server took too long to respond",
-                        "status_code": 502}
+            response = {"error": "Server took too long to respond", "status_code": 502}
             return response
-        
+
         except httpx.HTTPError as err:
             print(str(err))
-            response = {"error": "Something went wrong",
-                        "status_code": 500}
+            response = {"error": "Something went wrong", "status_code": 500}
             return response
 
     @staticmethod
@@ -146,20 +135,17 @@ class LoanClient:
 
         except httpx.ConnectError as err:
             print(str(err))
-            response = {"error": "Connection error",
-                        "status_code": 503}
+            response = {"error": "Connection error", "status_code": 503}
             return response
-        
+
         except httpx.ConnectTimeout as err:
             print(str(err))
-            response = {"error": "Server took too long to respond",
-                        "status_code": 502}
+            response = {"error": "Server took too long to respond", "status_code": 502}
             return response
-        
+
         except httpx.HTTPError as err:
             print(str(err))
-            response = {"error": "Something went wrong",
-                        "status_code": 500}
+            response = {"error": "Something went wrong", "status_code": 500}
             return response
 
     @staticmethod

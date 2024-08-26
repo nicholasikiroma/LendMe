@@ -1,0 +1,23 @@
+# Specify language runtime
+FROM python:3.10-slim-bullseye
+
+RUN apt-get -y update && apt-get install -y libpq-dev && apt-get install -y gcc
+
+# Set working directory
+WORKDIR /src
+
+# Copy requirements file
+COPY ./requirements.txt requirements.txt
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy source files to working dir
+COPY . .
+
+# Expose port
+
+EXPOSE 5002
+
+# Run application
+CMD [ "flask", "run", "--host=0.0.0.0", "--port=5002" ]

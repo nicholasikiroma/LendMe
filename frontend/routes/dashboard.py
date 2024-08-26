@@ -122,6 +122,7 @@ def my_loans():
 
 
 @blp.route("/loans/apply", methods=["POST"])
+@login_required
 def submit_apply():
     """Apply to loan"""
     loan_id = request.form.get("loanId")
